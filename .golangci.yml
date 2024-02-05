@@ -1,0 +1,119 @@
+linters-settings:
+  cyclop:
+    max-complexity: 12
+
+  gci:
+    sections:
+      - standard # Standard section: captures all standard packages.
+      - default # Default section: contains all imports that could not be matched to another section type.
+      - prefix(github.com/peteraba/xemmet) # Custom section: groups all imports with the specified Prefix.
+    #    - blank # Blank section: contains all blank imports. This section is not present unless explicitly enabled.
+    #    - dot # Dot section: contains all dot imports. This section is not present unless explicitly enabled.
+    custom-order: true
+
+  godox:
+    keywords:
+      - "TMP"
+      - "TEMP"
+      - "FIXME"
+      - "HACK"
+
+  tagalign:
+    strict: true
+
+  tagliatelle:
+    # Check the struct tag name case.
+    case:
+      # Use the struct field name to check the name of the struct tag.
+      # Default: false
+      use-field-name: false
+      # `camel` is used for `json` and `yaml`, and `header` is used for `header` (can be overridden)
+      # Default: {}
+      rules:
+        # Any struct tag type can be used.
+        # Support string case: `camel`, `pascal`, `kebab`, `snake`, `upperSnake`, `goCamel`, `goPascal`, `goKebab`, `goSnake`, `upper`, `lower`, `header`
+        json: snake
+        yaml: camel
+        xml: camel
+        bson: camel
+        avro: snake
+        mapstructure: kebab
+        env: upperSnake
+        envconfig: upperSnake
+
+  varnamelen:
+    ignore-names:
+      - err
+      - ok
+      - tt
+      - tx
+    ignore-decls:
+      - idx int
+      - i int
+      - w *bufio.Writer
+      - c *fiber.Ctx
+      - p pagination.Pagination
+
+  wrapcheck:
+    ignoreSigs:
+      - .Errorf(
+      - errors.New(
+      - errors.Unwrap(
+      - .Wrap(
+      - .Wrapf(
+      - .WithMessage(
+      - .WithMessagef(
+      - .WithStack(
+      - validate.Struct(
+      - .SendString(
+      - .Status(
+      - .Send(
+      - .JSON(
+      - .SendStatus(
+      - .Render(
+      - .Redirect(
+      - .Next(
+      - .NoContent(
+      - .SendProblemJSON(
+    ignoreSigRegexps:
+      - \.New.*Error\(
+
+linters:
+  # Enable presets.
+  # https://golangci-lint.run/usage/linters
+  presets:
+    - bugs
+    - comment
+    - complexity
+    - error
+    - format
+    - import
+    - metalinter
+    - module
+    - performance
+    - sql
+    - style
+    - test
+    - unused
+  # Run only fast linters from enabled linters set (first run won't be fast)
+  # Default: false
+  #  fast: true
+  disable:
+    # TODO: Check if this is worth enabling
+    - depguard
+    - lll
+    - goimports
+    - exhaustruct
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - funlen
+        - wsl
+        - dupl
+        - maintidx
+        - dupword
+    - text: should be written without leading space as
+      linters:
+        - nolintlint

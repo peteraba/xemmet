@@ -1,0 +1,49 @@
+version: '3'
+
+interval: '500ms'
+
+dotenv:
+  - .env
+
+tasks:
+  fix:
+    cmds:
+      - tagalign -fix -sort -strict ./...
+      - gofumpt -l -w .
+
+  quick-check:
+    deps: [fix]
+    cmds:
+      - golangci-lint run
+      - go test -race ./...
+
+  slow-check:
+    deps: [fix]
+    cmds:
+      - golangci-lint run
+      - go test -race -count=1 -cover -coverprofile coverprofile.txt -tags=integration ./...
+  #      - govulncheck ./...
+  #      - capslock
+
+  install:
+    cmds:
+      # tooling for aligning tags in structs
+      - go install github.com/4meepo/tagalign/cmd/tagalign@latest
+      # tooling for deterministic imports
+      - go install github.com/daixiang0/gci@latest
+      # tooling to keep on top of vulnerabilities
+#      - go install golang.org/x/vuln/cmd/govulncheck@latest
+      # tooling to keep on top of vulnerabilities
+#      - go install github.com/google/capslock/cmd/capslock@latest
+      # install metalinter
+      - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.55.2
+      # install goimports separately
+      - go install golang.org/x/tools/cmd/goimports@latest
+      # install goreleaser
+      - go install github.com/goreleaser/goreleaser@latest
+      # install used vendor libraries
+      - go mod download
+
+  release:
+    cmds:
+      - goreleaser release
