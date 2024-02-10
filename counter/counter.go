@@ -6,7 +6,7 @@ import (
 
 var (
 	// nolint:gochecknoglobals
-	globalTabStopCounter = 0
+	globalTabStopCounter = 1
 	// nolint:gochecknoglobals
 	globalTabStopMutex = &sync.Mutex{}
 )
@@ -15,7 +15,7 @@ func ResetGlobalTabStopCounter() {
 	globalTabStopMutex.Lock()
 	defer globalTabStopMutex.Unlock()
 
-	globalTabStopCounter = 0
+	globalTabStopCounter = 1
 }
 
 func GetGlobalTabStopCounter() int {

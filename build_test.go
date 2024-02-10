@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/peteraba/xemmet/counter"
 )
 
 func TestBuild(t *testing.T) {
@@ -642,6 +644,8 @@ func TestBuild(t *testing.T) {
 
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
+			counter.ResetGlobalTabStopCounter()
 
 			elements := Build(tt.args.tokens, tt.args.num, tt.args.siblingCount)
 

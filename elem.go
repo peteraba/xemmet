@@ -73,8 +73,8 @@ func (e Elem) isShortTagXML(mode Mode) bool {
 func (e Elem) HTML(mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) string {
 	var builder strings.Builder
 
-	xmlShortTag := e.isShortTagXML(mode)
-	htmlShortTag := e.isShortTagHTML(mode)
+	xmlShortTag := e.isShortTagXML(mode) && tabStopWrapper == ""
+	htmlShortTag := e.isShortTagHTML(mode) && tabStopWrapper == ""
 	shortTag := xmlShortTag || htmlShortTag
 	emptyTag := e.isEmptyTag()
 
@@ -87,7 +87,11 @@ func (e Elem) HTML(mode Mode, indentation string, depth int, multiline bool, tab
 		return e.TextOnly(currentIndentation, "", multiline)
 	}
 
-	builder.WriteString(e.OpeningTag(currentIndentation, xmlShortTag, multiline, emptyTag, tabStopWrapper))
+	builder.WriteString(e.OpeningTag(currentIndentation, xmlShortTag, multiline, tabStopWrapper))
+
+	if multiline && (!emptyTag || shortTag) {
+		builder.WriteString("\n")
+	}
 
 	if !shortTag {
 		builder.WriteString(e.TextOnly(currentIndentation, indentation, multiline))
@@ -122,7 +126,7 @@ func (e Elem) TextOnly(currentIndentation, indentationExtra string, multiline bo
 	return currentIndentation + indentationExtra + e.GetText()
 }
 
-func (e Elem) OpeningTag(currentIndentation string, xmlShortTag, multiline, emptyTag bool, tabStopWrapper string) string {
+func (e Elem) OpeningTag(currentIndentation string, xmlShortTag, multiline bool, tabStopWrapper string) string {
 	var builder strings.Builder
 
 	if multiline {
@@ -140,15 +144,15 @@ func (e Elem) OpeningTag(currentIndentation string, xmlShortTag, multiline, empt
 		builder.WriteString("\"")
 	}
 
+	if len(e.Attributes) > 0 {
+		builder.WriteString(" ")
+		builder.WriteString(e.GetAttrs(tabStopWrapper))
+	}
+
 	if len(e.Classes) > 0 {
 		builder.WriteString(" class=\"")
 		builder.WriteString(e.GetClass())
 		builder.WriteString("\"")
-	}
-
-	if len(e.Attributes) > 0 {
-		builder.WriteString(" ")
-		builder.WriteString(e.GetAttrs(tabStopWrapper))
 	}
 
 	if xmlShortTag {
@@ -156,10 +160,6 @@ func (e Elem) OpeningTag(currentIndentation string, xmlShortTag, multiline, empt
 	}
 
 	builder.WriteString(">")
-
-	if multiline && (xmlShortTag || !emptyTag) {
-		builder.WriteString("\n")
-	}
 
 	return builder.String()
 }

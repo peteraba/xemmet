@@ -46,20 +46,22 @@ var htmlTagAbbreviations = map[string]string{
 }
 
 // based on https://github.com/emmetio/emmet/blob/master/src/snippets/html.json
-func (s *Snippeter) Walk(tokens []Token) []Token {
+func (s *Snippeter) Walk(tokens ...Token) []Token {
 	for _, token := range tokens {
 		if tagToken, ok := token.(*TagToken); ok {
 			s.ApplySnippets(tagToken)
 		}
 
 		for _, child := range token.GetChildren() {
-			tagToken, ok := child.(*TagToken)
-			if !ok {
-				continue
-			}
-
-			s.ApplySnippets(tagToken)
+			s.Walk(child)
 		}
+
+		tagToken, ok := token.(*TagToken)
+		if !ok {
+			continue
+		}
+
+		s.ApplySnippets(tagToken)
 	}
 
 	return tokens

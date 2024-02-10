@@ -64,4 +64,72 @@ func TestXemmet(t *testing.T) {
 		assert.Contains(t, gotErr.Error(), ErrTokenizingMsg)
 		assert.Empty(t, got)
 	})
+
+	type args struct {
+		mode           Mode
+		snippet        string
+		indentation    string
+		depth          int
+		multiline      bool
+		tabStopWrapper string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    string
+		wantErr assert.ErrorAssertionFunc
+	}{
+		{
+			name: "very simple xml - tab stops, depth = 2",
+			args: args{
+				mode:           ModeXML,
+				snippet:        `collection[foo=bar]>item*3+item[bar=]`,
+				indentation:    "  ",
+				depth:          2,
+				multiline:      true,
+				tabStopWrapper: "$",
+			},
+			want: `<collection foo="bar">
+      <item>$STOP1$</item>
+      <item>$STOP2$</item>
+      <item>$STOP3$</item>
+      <item bar="$STOP4$">$STOP5$</item>
+    </collection>`,
+			wantErr: RequireNoError,
+		},
+		{
+			name: "very simple html - no tab stops, depth = 2, anchor used",
+			args: args{
+				mode:           ModeHTML,
+				snippet:        `div.container>h1.h1+ul.list>li.item#item$$*3^a:blank.button+br`,
+				indentation:    "  ",
+				depth:          2,
+				multiline:      true,
+				tabStopWrapper: "",
+			},
+			want: `<div class="container">
+      <h1 class="h1"></h1>
+      <ul class="list">
+        <li id="item01" class="item"></li>
+        <li id="item02" class="item"></li>
+        <li id="item03" class="item"></li>
+      </ul>
+      <a href="https://" target="_blank" rel="noopener noreferrer" class="button"></a>
+      <br>
+    </div>`,
+			wantErr: RequireNoError,
+		},
+	}
+	for _, tt := range tests {
+		tt := tt
+
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			got, gotErr := Xemmet(tt.args.mode, tt.args.snippet, tt.args.indentation, tt.args.depth, true, tt.args.tabStopWrapper)
+			tt.wantErr(t, gotErr)
+
+			assert.Equal(t, tt.want, got)
+		})
+	}
 }

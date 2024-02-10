@@ -4,6 +4,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/peteraba/xemmet/counter"
 )
 
 func TestElem_HTML(t *testing.T) {
@@ -125,7 +127,7 @@ func TestElem_HTML(t *testing.T) {
 				multiline:      false,
 				tabStopWrapper: "",
 			},
-			want: `<div id="foo" class="bar baz" style="background-color: red;" hello="bye">Hello, World!</div>`,
+			want: `<div id="foo" style="background-color: red;" hello="bye" class="bar baz">Hello, World!</div>`,
 		},
 		{
 			name: "div with children and attributes, single line",
@@ -166,7 +168,7 @@ func TestElem_HTML(t *testing.T) {
 				multiline:      false,
 				tabStopWrapper: "",
 			},
-			want: `<div id="foo" class="bar baz" style="background-color: red;" hello="bye"><p>Hello, <span>World</span>!</p><p>Aloha!</p></div>`,
+			want: `<div id="foo" style="background-color: red;" hello="bye" class="bar baz"><p>Hello, <span>World</span>!</p><p>Aloha!</p></div>`,
 		},
 		{
 			name: "div with children and attributes, multiline",
@@ -210,7 +212,7 @@ func TestElem_HTML(t *testing.T) {
 				multiline:      true,
 				tabStopWrapper: "",
 			},
-			want: `<div id="foo" class="bar baz" style="background-color: red;" hello="bye">
+			want: `<div id="foo" style="background-color: red;" hello="bye" class="bar baz">
   <p>
     Hello, 
     <span>
@@ -296,6 +298,8 @@ func TestElem_HTML(t *testing.T) {
 
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
+
+			counter.ResetGlobalTabStopCounter()
 
 			got := tt.sut.HTML(tt.args.mode, tt.args.indentation, tt.args.depth, tt.args.multiline, tt.args.tabStopWrapper)
 

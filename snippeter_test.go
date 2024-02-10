@@ -134,7 +134,7 @@ func TestSnippeter_Walk(t *testing.T) {
 
 			sut := NewSnippeter(tt.fields.mode)
 
-			got := sut.Walk(tt.args.tokens)
+			got := sut.Walk(tt.args.tokens...)
 
 			assert.NotNil(t, got)
 			assert.Len(t, got, 1)

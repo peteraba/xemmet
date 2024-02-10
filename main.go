@@ -8,8 +8,6 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
-
-	"github.com/peteraba/xemmet/counter"
 )
 
 type Mode string
@@ -88,17 +86,22 @@ const (
 func Xemmet(mode Mode, str string, indentation string, depth int, multiline bool, tabStopWrapper string) (string, error) {
 	l := NewLexer(mode)
 
+	// Create raw tokens
 	tokens, _, err := l.Tokenize([]rune(str), false)
 	if err != nil {
 		return "", errors.Wrap(err, ErrTokenizingMsg)
 	}
 
+	// Adjust tokens based on predefined rules
 	s := NewSnippeter(mode)
-	tokens = s.Walk(tokens)
+	tokens = s.Walk(tokens...)
 
+	// Convert tokens to HTML/XML elements
 	elemList := Build(tokens, 1, 1)
 
-	counter.ResetGlobalTabStopCounter()
+	// Render HTML/XML
+	rawResult := elemList.HTML(mode, indentation, depth, multiline, tabStopWrapper)
 
-	return strings.Trim(elemList.HTML(mode, indentation, depth, multiline, tabStopWrapper), "\n\t\r "), nil
+	// Finalize response
+	return strings.Trim(rawResult, "\n\t\r "), nil
 }
