@@ -100,7 +100,9 @@ func Xemmet(mode Mode, str string, indentation string, depth int, multiline bool
 	elemList := Build(tokens, 1, 1)
 
 	// Render HTML/XML
-	rawResult := elemList.HTML(mode, indentation, depth, multiline, tabStopWrapper)
+	builder := &strings.Builder{}
+	elemList.HTML(builder, mode, indentation, depth, multiline, tabStopWrapper)
+	rawResult := builder.String()
 
 	// Finalize response
 	return strings.Trim(rawResult, "\n\t\r "), nil

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -301,9 +302,11 @@ func TestElem_HTML(t *testing.T) {
 
 			counter.ResetGlobalTabStopCounter()
 
-			got := tt.sut.HTML(tt.args.mode, tt.args.indentation, tt.args.depth, tt.args.multiline, tt.args.tabStopWrapper)
+			builder := &strings.Builder{}
 
-			assert.Equal(t, tt.want, got)
+			tt.sut.HTML(builder, tt.args.mode, tt.args.indentation, tt.args.depth, tt.args.multiline, tt.args.tabStopWrapper)
+
+			assert.Equal(t, tt.want, builder.String())
 		})
 	}
 }

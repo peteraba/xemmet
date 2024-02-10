@@ -647,11 +647,13 @@ func TestBuild(t *testing.T) {
 
 			counter.ResetGlobalTabStopCounter()
 
+			builder := &strings.Builder{}
+
 			elements := Build(tt.args.tokens, tt.args.num, tt.args.siblingCount)
 
-			gotHTML := elements.HTML(tt.args.mode, tt.args.indentation, tt.args.depth, tt.args.multiline, tt.args.tabStopWrapper)
+			elements.HTML(builder, tt.args.mode, tt.args.indentation, tt.args.depth, tt.args.multiline, tt.args.tabStopWrapper)
 
-			assert.Equal(t, tt.wantHTML, gotHTML)
+			assert.Equal(t, tt.wantHTML, builder.String())
 		})
 	}
 }

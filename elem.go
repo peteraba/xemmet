@@ -70,9 +70,7 @@ func (e Elem) isShortTagXML(mode Mode) bool {
 	return true
 }
 
-func (e Elem) HTML(mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) string {
-	var builder strings.Builder
-
+func (e Elem) HTML(builder *strings.Builder, mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) {
 	xmlShortTag := e.isShortTagXML(mode) && tabStopWrapper == ""
 	htmlShortTag := e.isShortTagHTML(mode) && tabStopWrapper == ""
 	shortTag := xmlShortTag || htmlShortTag
@@ -84,26 +82,26 @@ func (e Elem) HTML(mode Mode, indentation string, depth int, multiline bool, tab
 	}
 
 	if e.Name == "" {
-		return e.TextOnly(currentIndentation, "", multiline)
+		e.TextOnly(builder, currentIndentation, "", multiline)
+
+		return
 	}
 
-	builder.WriteString(e.OpeningTag(currentIndentation, xmlShortTag, multiline, tabStopWrapper))
+	e.OpeningTag(builder, currentIndentation, xmlShortTag, multiline, tabStopWrapper)
 
 	if multiline && (!emptyTag || shortTag) {
 		builder.WriteString("\n")
 	}
 
 	if !shortTag {
-		builder.WriteString(e.TextOnly(currentIndentation, indentation, multiline))
+		e.TextOnly(builder, currentIndentation, indentation, multiline)
 
-		builder.WriteString(e.TabStop(tabStopWrapper))
+		e.TabStop(builder, tabStopWrapper)
 
-		builder.WriteString(e.RenderChildren(mode, indentation, depth, multiline, tabStopWrapper))
+		e.RenderChildren(builder, mode, indentation, depth, multiline, tabStopWrapper)
 
-		builder.WriteString(e.ClosingTag(currentIndentation, multiline, emptyTag))
+		e.ClosingTag(builder, currentIndentation, multiline, emptyTag)
 	}
-
-	return builder.String()
 }
 
 func (e Elem) GetText() string {
@@ -114,21 +112,23 @@ func (e Elem) GetText() string {
 	return e.Text.GetValue()
 }
 
-func (e Elem) TextOnly(currentIndentation, indentationExtra string, multiline bool) string {
+func (e Elem) TextOnly(builder *strings.Builder, currentIndentation, indentationExtra string, multiline bool) {
 	if e.Text.IsEmpty() || !multiline {
-		return e.GetText()
+		builder.WriteString(e.GetText())
+
+		return
 	}
+
+	builder.WriteString(currentIndentation)
+	builder.WriteString(indentationExtra)
+	builder.WriteString(e.GetText())
 
 	if multiline {
-		return currentIndentation + indentationExtra + e.GetText() + "\n"
+		builder.WriteString("\n")
 	}
-
-	return currentIndentation + indentationExtra + e.GetText()
 }
 
-func (e Elem) OpeningTag(currentIndentation string, xmlShortTag, multiline bool, tabStopWrapper string) string {
-	var builder strings.Builder
-
+func (e Elem) OpeningTag(builder *strings.Builder, currentIndentation string, xmlShortTag, multiline bool, tabStopWrapper string) {
 	if multiline {
 		builder.WriteString(currentIndentation)
 	}
@@ -160,16 +160,14 @@ func (e Elem) OpeningTag(currentIndentation string, xmlShortTag, multiline bool,
 	}
 
 	builder.WriteString(">")
-
-	return builder.String()
 }
 
-func (e Elem) TabStop(tabStopWrapper string) string {
+func (e Elem) TabStop(builder *strings.Builder, tabStopWrapper string) {
 	if len(e.Children) != 0 {
-		return ""
+		return
 	}
 
-	return newTabStop(tabStopWrapper)
+	builder.WriteString(newTabStop(tabStopWrapper))
 }
 
 func newTabStop(tabStopWrapper string) string {
@@ -180,25 +178,19 @@ func newTabStop(tabStopWrapper string) string {
 	return fmt.Sprintf("%sSTOP%d%s", tabStopWrapper, counter.GetGlobalTabStopCounter(), tabStopWrapper)
 }
 
-func (e Elem) RenderChildren(mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) string {
+func (e Elem) RenderChildren(builder *strings.Builder, mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) {
 	if len(e.Children) == 0 {
-		return ""
+		return
 	}
-
-	var builder strings.Builder
 
 	nextDepth := depth + 1
 
 	for _, child := range e.Children {
-		builder.WriteString(child.HTML(mode, indentation, nextDepth, multiline, tabStopWrapper))
+		child.HTML(builder, mode, indentation, nextDepth, multiline, tabStopWrapper)
 	}
-
-	return builder.String()
 }
 
-func (e Elem) ClosingTag(currentIndentation string, multiline, emptyTag bool) string {
-	var builder strings.Builder
-
+func (e Elem) ClosingTag(builder *strings.Builder, currentIndentation string, multiline, emptyTag bool) {
 	if multiline && !emptyTag {
 		builder.WriteString(currentIndentation)
 	}
@@ -210,8 +202,6 @@ func (e Elem) ClosingTag(currentIndentation string, multiline, emptyTag bool) st
 	if multiline {
 		builder.WriteString("\n")
 	}
-
-	return builder.String()
 }
 
 func (e Elem) Clone(num, siblingCount int) Elem {
@@ -275,12 +265,8 @@ func (el ElemList) Clone(num, siblingCount int) ElemList {
 	return newEl
 }
 
-func (el ElemList) HTML(mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) string {
-	var builder strings.Builder
-
+func (el ElemList) HTML(builder *strings.Builder, mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) {
 	for _, e := range el {
-		builder.WriteString(e.HTML(mode, indentation, depth, multiline, tabStopWrapper))
+		e.HTML(builder, mode, indentation, depth, multiline, tabStopWrapper)
 	}
-
-	return builder.String()
 }
