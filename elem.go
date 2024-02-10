@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"strings"
+
+	"github.com/peteraba/xemmet/counter"
 )
 
 // nolint: gochecknoglobals
@@ -68,7 +70,7 @@ func (e Elem) isShortTagXML(mode Mode) bool {
 	return true
 }
 
-func (e Elem) HTML(mode Mode, indentation string, depth int, multiline bool) string {
+func (e Elem) HTML(mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) string {
 	var builder strings.Builder
 
 	xmlShortTag := e.isShortTagXML(mode)
@@ -85,12 +87,14 @@ func (e Elem) HTML(mode Mode, indentation string, depth int, multiline bool) str
 		return e.TextOnly(currentIndentation, "", multiline)
 	}
 
-	builder.WriteString(e.OpeningTag(currentIndentation, xmlShortTag, multiline, emptyTag))
+	builder.WriteString(e.OpeningTag(currentIndentation, xmlShortTag, multiline, emptyTag, tabStopWrapper))
 
 	if !shortTag {
 		builder.WriteString(e.TextOnly(currentIndentation, indentation, multiline))
 
-		builder.WriteString(e.RenderChildren(mode, indentation, depth, multiline))
+		builder.WriteString(e.TabStop(tabStopWrapper))
+
+		builder.WriteString(e.RenderChildren(mode, indentation, depth, multiline, tabStopWrapper))
 
 		builder.WriteString(e.ClosingTag(currentIndentation, multiline, emptyTag))
 	}
@@ -118,7 +122,7 @@ func (e Elem) TextOnly(currentIndentation, indentationExtra string, multiline bo
 	return currentIndentation + indentationExtra + e.GetText()
 }
 
-func (e Elem) OpeningTag(currentIndentation string, xmlShortTag, multiline, emptyTag bool) string {
+func (e Elem) OpeningTag(currentIndentation string, xmlShortTag, multiline, emptyTag bool, tabStopWrapper string) string {
 	var builder strings.Builder
 
 	if multiline {
@@ -144,7 +148,7 @@ func (e Elem) OpeningTag(currentIndentation string, xmlShortTag, multiline, empt
 
 	if len(e.Attributes) > 0 {
 		builder.WriteString(" ")
-		builder.WriteString(e.GetAttrs())
+		builder.WriteString(e.GetAttrs(tabStopWrapper))
 	}
 
 	if xmlShortTag {
@@ -160,7 +164,23 @@ func (e Elem) OpeningTag(currentIndentation string, xmlShortTag, multiline, empt
 	return builder.String()
 }
 
-func (e Elem) RenderChildren(mode Mode, indentation string, depth int, multiline bool) string {
+func (e Elem) TabStop(tabStopWrapper string) string {
+	if len(e.Children) != 0 {
+		return ""
+	}
+
+	return newTabStop(tabStopWrapper)
+}
+
+func newTabStop(tabStopWrapper string) string {
+	if tabStopWrapper == "" {
+		return ""
+	}
+
+	return fmt.Sprintf("%sSTOP%d%s", tabStopWrapper, counter.GetGlobalTabStopCounter(), tabStopWrapper)
+}
+
+func (e Elem) RenderChildren(mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) string {
 	if len(e.Children) == 0 {
 		return ""
 	}
@@ -170,7 +190,7 @@ func (e Elem) RenderChildren(mode Mode, indentation string, depth int, multiline
 	nextDepth := depth + 1
 
 	for _, child := range e.Children {
-		builder.WriteString(child.HTML(mode, indentation, nextDepth, multiline))
+		builder.WriteString(child.HTML(mode, indentation, nextDepth, multiline, tabStopWrapper))
 	}
 
 	return builder.String()
@@ -232,11 +252,11 @@ func (e Elem) GetClass() string {
 	return strings.Join(classes, " ")
 }
 
-func (e Elem) GetAttrs() string {
+func (e Elem) GetAttrs(tabStopWrapper string) string {
 	attrs := []string{}
 	for _, attr := range e.Attributes {
 		// TODO: escape attribute values
-		attrs = append(attrs, fmt.Sprintf(`%s="%s"`, attr.Name, attr.GetValue()))
+		attrs = append(attrs, fmt.Sprintf(`%s="%s"`, attr.Name, attr.GetValue(tabStopWrapper)))
 	}
 
 	return strings.Join(attrs, " ")
@@ -255,11 +275,11 @@ func (el ElemList) Clone(num, siblingCount int) ElemList {
 	return newEl
 }
 
-func (el ElemList) HTML(mode Mode, indentation string, depth int, multiline bool) string {
+func (el ElemList) HTML(mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) string {
 	var builder strings.Builder
 
 	for _, e := range el {
-		builder.WriteString(e.HTML(mode, indentation, depth, multiline))
+		builder.WriteString(e.HTML(mode, indentation, depth, multiline, tabStopWrapper))
 	}
 
 	return builder.String()

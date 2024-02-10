@@ -8,6 +8,8 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
+
+	"github.com/peteraba/xemmet/counter"
 )
 
 type Mode string
@@ -47,6 +49,11 @@ func main() {
 				Value: false,
 				Usage: "Enable debug mode",
 			},
+			&cli.StringFlag{
+				Name:  "tabStop",
+				Value: "",
+				Usage: "Unique set of characters to surround variable names used for tabs stops (if empty, then tab stops will not be added)",
+			},
 		},
 		Action: func(cCtx *cli.Context) error {
 			var (
@@ -55,9 +62,10 @@ func main() {
 				indentation = cCtx.String("indentation")
 				depth       = cCtx.Int("depth")
 				multiline   = !cCtx.Bool("inline")
+				tabStop     = cCtx.String("tabStop")
 			)
 
-			got, err := Xemmet(mode, str, indentation, depth, multiline)
+			got, err := Xemmet(mode, str, indentation, depth, multiline, tabStop)
 			if err != nil {
 				return err
 			}
@@ -77,7 +85,7 @@ const (
 	ErrTokenizingMsg = "error tokenizing string"
 )
 
-func Xemmet(mode Mode, str string, indentation string, depth int, multiline bool) (string, error) {
+func Xemmet(mode Mode, str string, indentation string, depth int, multiline bool, tabStopWrapper string) (string, error) {
 	l := NewLexer(mode)
 
 	tokens, _, err := l.Tokenize([]rune(str), false)
@@ -90,5 +98,7 @@ func Xemmet(mode Mode, str string, indentation string, depth int, multiline bool
 
 	elemList := Build(tokens, 1, 1)
 
-	return strings.Trim(elemList.HTML(mode, indentation, depth, multiline), "\n\t\r "), nil
+	counter.ResetGlobalTabStopCounter()
+
+	return strings.Trim(elemList.HTML(mode, indentation, depth, multiline, tabStopWrapper), "\n\t\r "), nil
 }

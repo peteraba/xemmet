@@ -10,7 +10,8 @@ func NewSnippeter(mode Mode) *Snippeter {
 	}
 }
 
-var m = map[string]string{
+// nolint:gochecknoglobals
+var htmlTagAbbreviations = map[string]string{
 	"bq":    "blockquote",
 	"fig":   "figure",
 	"figc":  "figcaption",
@@ -64,10 +65,12 @@ func (s *Snippeter) Walk(tokens []Token) []Token {
 	return tokens
 }
 
+// nolint: unparam, ireturn
 func (s *Snippeter) ApplySnippets(token *TagToken) Token {
+	// nolint: exhaustive
 	switch s.mode {
 	case ModeHTML, ModeHTMX:
-		if mappedName, ok := m[token.Name]; ok {
+		if mappedName, ok := htmlTagAbbreviations[token.Name]; ok {
 			token.SetName(mappedName)
 		}
 
@@ -111,10 +114,10 @@ func (s *Snippeter) ApplyHTMXSnippets(token *TagToken) {
 			SetName("script").
 			// TODO: Enable tab selection
 			FallbackAttribute(NewAttr("src", "https://unpkg.com/htmx.org@1.9.10"))
-
 	}
 }
 
+// nolint: funlen, gocyclo, cyclop, maintidx
 func (s *Snippeter) ApplyHTMLSnippets(token *TagToken) {
 	switch token.Name {
 	case "a":

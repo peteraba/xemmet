@@ -105,7 +105,7 @@ func TestAttr_GetValue(t *testing.T) {
 	t.Run("lorem ipsum", func(t *testing.T) {
 		t.Parallel()
 
-		got := NewAttr("foo", "lorem").GetValue()
+		got := NewAttr("foo", "lorem").GetValue("")
 
 		assert.NotEmpty(t, got)
 		assert.Equal(t, 4, strings.Count(got, " "))
@@ -114,25 +114,35 @@ func TestAttr_GetValue(t *testing.T) {
 	t.Run("lorem ipsum 25", func(t *testing.T) {
 		t.Parallel()
 
-		got := NewAttr("foo", "lorem25").GetValue()
+		got := NewAttr("foo", "lorem25").GetValue("")
 
 		assert.NotEmpty(t, got)
 		assert.Equal(t, 24, strings.Count(got, " "))
 	})
 
+	type args struct {
+		tabStopWrapper string
+	}
 	tests := []struct {
 		name string
 		sut  *Attr
+		args args
 		want string
 	}{
 		{
 			name: "short",
 			sut:  NewAttr("foo", "bar"),
+			args: args{
+				tabStopWrapper: "",
+			},
 			want: "bar",
 		},
 		{
 			name: "not short",
 			sut:  NewAttr("foo", "this is long enough"),
+			args: args{
+				tabStopWrapper: "",
+			},
 			want: "this is long enough",
 		},
 	}
@@ -142,7 +152,7 @@ func TestAttr_GetValue(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got := tt.sut.GetValue()
+			got := tt.sut.GetValue(tt.args.tabStopWrapper)
 
 			assert.Equal(t, tt.want, got)
 		})

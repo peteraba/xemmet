@@ -17,7 +17,7 @@ func TestXemmet(t *testing.T) {
 	t.Run("generate multiline html", func(t *testing.T) {
 		t.Parallel()
 
-		got, gotErr := Xemmet(ModeHTML, validSnippet, "  ", 1, true)
+		got, gotErr := Xemmet(ModeHTML, validSnippet, "  ", 1, true, "$$$")
 		require.NoError(t, gotErr)
 
 		assert.NotEmpty(t, got)
@@ -43,10 +43,11 @@ func TestXemmet(t *testing.T) {
 		assert.Contains(t, got, `      <th id="th" class="col3">`)
 		assert.Contains(t, got, `      <th id="th" class="col4">`)
 		assert.NotContains(t, got, `      <th id="th" class="col5">`)
-		assert.Regexp(t, regexp.MustCompile(`<th id="th" class="col4">[\w\d\s.]+</th>`), got)
+		assert.Regexp(t, regexp.MustCompile(`<th id="th" class="col4">[$\w\d\s.]+</th>`), got)
 		assert.NotContains(t, got, regexp.MustCompile(`<th id="th" class="col4">lorem2</th>`))
 
 		assert.Contains(t, got, "  </body>")
+		assert.Contains(t, got, "$$$STOP1$$$")
 
 		assert.Contains(t, got, "\n")
 	})
@@ -58,7 +59,7 @@ func TestXemmet(t *testing.T) {
 		to := gofakeit.Number(0, len(validSnippet)/2)
 		snippet := validSnippet[from : len(validSnippet)-to]
 
-		got, gotErr := Xemmet(ModeHTML, snippet, "  ", 1, true)
+		got, gotErr := Xemmet(ModeHTML, snippet, "  ", 1, true, "")
 		require.Error(t, gotErr)
 		assert.Contains(t, gotErr.Error(), ErrTokenizingMsg)
 		assert.Empty(t, got)

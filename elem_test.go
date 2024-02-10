@@ -10,10 +10,11 @@ func TestElem_HTML(t *testing.T) {
 	t.Parallel()
 
 	type args struct {
-		mode        Mode
-		indentation string
-		depth       int
-		multiline   bool
+		mode           Mode
+		indentation    string
+		depth          int
+		multiline      bool
+		tabStopWrapper string
 	}
 	tests := []struct {
 		name string
@@ -25,10 +26,11 @@ func TestElem_HTML(t *testing.T) {
 			name: "empty",
 			sut:  Elem{},
 			args: args{
-				mode:        ModeHTML,
-				indentation: "",
-				depth:       0,
-				multiline:   false,
+				mode:           ModeHTML,
+				indentation:    "",
+				depth:          0,
+				multiline:      false,
+				tabStopWrapper: "",
 			},
 			want: "",
 		},
@@ -38,10 +40,11 @@ func TestElem_HTML(t *testing.T) {
 				Text: NewText("foo"),
 			},
 			args: args{
-				mode:        ModeHTML,
-				indentation: "",
-				depth:       0,
-				multiline:   false,
+				mode:           ModeHTML,
+				indentation:    "",
+				depth:          0,
+				multiline:      false,
+				tabStopWrapper: "",
 			},
 			want: "foo",
 		},
@@ -51,10 +54,11 @@ func TestElem_HTML(t *testing.T) {
 				Name: "div",
 			},
 			args: args{
-				mode:        ModeHTML,
-				indentation: "",
-				depth:       0,
-				multiline:   false,
+				mode:           ModeHTML,
+				indentation:    "",
+				depth:          0,
+				multiline:      false,
+				tabStopWrapper: "",
 			},
 			want: "<div></div>",
 		},
@@ -64,10 +68,11 @@ func TestElem_HTML(t *testing.T) {
 				Name: "div",
 			},
 			args: args{
-				mode:        ModeXML,
-				indentation: "",
-				depth:       0,
-				multiline:   false,
+				mode:           ModeXML,
+				indentation:    "",
+				depth:          0,
+				multiline:      false,
+				tabStopWrapper: "",
 			},
 			want: "<div />",
 		},
@@ -77,10 +82,11 @@ func TestElem_HTML(t *testing.T) {
 				Name: "br",
 			},
 			args: args{
-				mode:        ModeHTML,
-				indentation: "",
-				depth:       0,
-				multiline:   false,
+				mode:           ModeHTML,
+				indentation:    "",
+				depth:          0,
+				multiline:      false,
+				tabStopWrapper: "",
 			},
 			want: "<br>",
 		},
@@ -90,10 +96,11 @@ func TestElem_HTML(t *testing.T) {
 				Name: "br",
 			},
 			args: args{
-				mode:        ModeXML,
-				indentation: "",
-				depth:       0,
-				multiline:   false,
+				mode:           ModeXML,
+				indentation:    "",
+				depth:          0,
+				multiline:      false,
+				tabStopWrapper: "",
 			},
 			want: "<br />",
 		},
@@ -112,10 +119,11 @@ func TestElem_HTML(t *testing.T) {
 				SiblingCount: 1,
 			},
 			args: args{
-				mode:        ModeHTML,
-				indentation: "",
-				depth:       0,
-				multiline:   false,
+				mode:           ModeHTML,
+				indentation:    "",
+				depth:          0,
+				multiline:      false,
+				tabStopWrapper: "",
 			},
 			want: `<div id="foo" class="bar baz" style="background-color: red;" hello="bye">Hello, World!</div>`,
 		},
@@ -152,10 +160,11 @@ func TestElem_HTML(t *testing.T) {
 				SiblingCount: 1,
 			},
 			args: args{
-				mode:        ModeHTML,
-				indentation: "",
-				depth:       0,
-				multiline:   false,
+				mode:           ModeHTML,
+				indentation:    "",
+				depth:          0,
+				multiline:      false,
+				tabStopWrapper: "",
 			},
 			want: `<div id="foo" class="bar baz" style="background-color: red;" hello="bye"><p>Hello, <span>World</span>!</p><p>Aloha!</p></div>`,
 		},
@@ -195,10 +204,11 @@ func TestElem_HTML(t *testing.T) {
 				SiblingCount: 1,
 			},
 			args: args{
-				mode:        ModeHTML,
-				indentation: "  ",
-				depth:       0,
-				multiline:   true,
+				mode:           ModeHTML,
+				indentation:    "  ",
+				depth:          0,
+				multiline:      true,
+				tabStopWrapper: "",
 			},
 			want: `<div id="foo" class="bar baz" style="background-color: red;" hello="bye">
   <p>
@@ -228,10 +238,11 @@ func TestElem_HTML(t *testing.T) {
 				SiblingCount: 1,
 			},
 			args: args{
-				mode:        ModeHTML,
-				indentation: "",
-				depth:       0,
-				multiline:   false,
+				mode:           ModeHTML,
+				indentation:    "",
+				depth:          0,
+				multiline:      false,
+				tabStopWrapper: "",
 			},
 			want: `<div id="foo5" class="bar5 baz05">Hello, World!</div>`,
 		},
@@ -249,10 +260,11 @@ func TestElem_HTML(t *testing.T) {
 				SiblingCount: 2,
 			},
 			args: args{
-				mode:        ModeHTML,
-				indentation: "",
-				depth:       0,
-				multiline:   false,
+				mode:           ModeHTML,
+				indentation:    "",
+				depth:          0,
+				multiline:      false,
+				tabStopWrapper: "",
 			},
 			want: `<div id="foo6" class="bar5 baz05">Hello, World!</div>`,
 		},
@@ -270,10 +282,11 @@ func TestElem_HTML(t *testing.T) {
 				SiblingCount: 2,
 			},
 			args: args{
-				mode:        ModeHTML,
-				indentation: "",
-				depth:       0,
-				multiline:   false,
+				mode:           ModeHTML,
+				indentation:    "",
+				depth:          0,
+				multiline:      false,
+				tabStopWrapper: "",
 			},
 			want: `<div id="foo5" class="bar6 baz06">Hello, World!</div>`,
 		},
@@ -284,7 +297,7 @@ func TestElem_HTML(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got := tt.sut.HTML(tt.args.mode, tt.args.indentation, tt.args.depth, tt.args.multiline)
+			got := tt.sut.HTML(tt.args.mode, tt.args.indentation, tt.args.depth, tt.args.multiline, tt.args.tabStopWrapper)
 
 			assert.Equal(t, tt.want, got)
 		})

@@ -144,9 +144,9 @@ func (a *Attr) Clone() *Attr {
 	}
 }
 
-func (a *Attr) GetValue() string {
-	if a == nil {
-		return ""
+func (a *Attr) GetValue(tabStopWrapper string) string {
+	if a == nil || a.value == "" {
+		return newTabStop(tabStopWrapper)
 	}
 
 	if len(a.value) < 5 || a.value[:5] != "lorem" {

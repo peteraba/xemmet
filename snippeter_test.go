@@ -7,6 +7,8 @@ import (
 )
 
 func TestSnippeter_Walk(t *testing.T) {
+	t.Parallel()
+
 	type fields struct {
 		mode Mode
 	}
@@ -125,7 +127,11 @@ func TestSnippeter_Walk(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		tt := tt
+
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			sut := NewSnippeter(tt.fields.mode)
 
 			got := sut.Walk(tt.args.tokens)
@@ -134,7 +140,8 @@ func TestSnippeter_Walk(t *testing.T) {
 			assert.Len(t, got, 1)
 			assert.IsType(t, &TagToken{}, got[0])
 
-			g := got[0].(*TagToken)
+			g, ok := got[0].(*TagToken)
+			assert.True(t, ok)
 			assert.Equal(t, tt.want.Name, g.Name)
 			assert.Equal(t, tt.want.ID, g.ID)
 			assert.Equal(t, tt.want.Classes, g.Classes)
