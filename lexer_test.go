@@ -472,7 +472,7 @@ func TestLexer_FindAttribute(t *testing.T) {
 			wantErr:          assert.NoError,
 		},
 		{
-			name:             "complete with unquoted value",
+			name:             "complete with unquoted Value",
 			sut:              NewLexer(ModeHTML),
 			args:             args{runes: []rune("foobar=barfoo!")},
 			wantName:         "foobar",
@@ -482,7 +482,7 @@ func TestLexer_FindAttribute(t *testing.T) {
 			wantErr:          assert.NoError,
 		},
 		{
-			name:             "complete with quoted value",
+			name:             "complete with quoted Value",
 			sut:              NewLexer(ModeHTML),
 			args:             args{runes: []rune(`foobar="bar! foo"`)},
 			wantName:         "foobar",

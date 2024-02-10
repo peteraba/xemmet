@@ -32,7 +32,7 @@ func TestSnippeter_Walk(t *testing.T) {
 				},
 			},
 			want: NewTagToken("a", 1).
-				AddAttribute(NewAttr("href", "#")),
+				AddAttribute(NewDefaultAttr("href", "#")),
 		},
 		{
 			name: "a - overwrite",
@@ -42,11 +42,11 @@ func TestSnippeter_Walk(t *testing.T) {
 			args: args{
 				tokens: []Token{
 					NewTagToken("a", 1).
-						AddAttribute(NewAttr("href", "foo")),
+						AddAttribute(NewDefaultAttr("href", "foo")),
 				},
 			},
 			want: NewTagToken("a", 1).
-				AddAttribute(NewAttr("href", "foo")),
+				AddAttribute(NewDefaultAttr("href", "foo")),
 		},
 		{
 			name: "area",
@@ -59,10 +59,10 @@ func TestSnippeter_Walk(t *testing.T) {
 				},
 			},
 			want: NewTagToken("area", 1).
-				AddAttribute(NewAttr("coords", "")).
-				AddAttribute(NewAttr("href", "")).
-				AddAttribute(NewAttr("alt", "")).
-				AddAttribute(NewAttr("shape", "")),
+				AddAttribute(NewDefaultAttr("coords", "")).
+				AddAttribute(NewDefaultAttr("href", "")).
+				AddAttribute(NewDefaultAttr("alt", "")).
+				AddAttribute(NewDefaultAttr("shape", "")),
 		},
 		{
 			name: "area:d",
@@ -75,10 +75,10 @@ func TestSnippeter_Walk(t *testing.T) {
 				},
 			},
 			want: NewTagToken("area", 1).
-				AddAttribute(NewAttr("coords", "")).
-				AddAttribute(NewAttr("href", "")).
-				AddAttribute(NewAttr("alt", "")).
-				AddAttribute(NewAttr("shape", "default")),
+				AddAttribute(NewDefaultAttr("coords", "")).
+				AddAttribute(NewDefaultAttr("href", "")).
+				AddAttribute(NewDefaultAttr("alt", "")).
+				AddAttribute(NewDefaultAttr("shape", "default")),
 		},
 		{
 			name: "bq",
@@ -103,8 +103,8 @@ func TestSnippeter_Walk(t *testing.T) {
 				},
 			},
 			want: NewTagToken("iframe", 1).
-				AddAttribute(NewAttr("src", "")).
-				AddAttribute(NewAttr("frameborder", "0")),
+				AddAttribute(NewDefaultAttr("src", "")).
+				AddAttribute(NewDefaultAttr("frameborder", "0")),
 		},
 		{
 			name: "input:q",
@@ -117,13 +117,13 @@ func TestSnippeter_Walk(t *testing.T) {
 				},
 			},
 			want: NewTagToken("input", 1).
-				AddAttribute(NewAttr("name", "q")).
-				AddAttribute(NewAttr("type", "search")).
-				AddAttribute(NewAttr("hx-get", "")).
-				AddAttribute(NewAttr("hx-trigger", "keyup changed delay:500ms")).
-				AddAttribute(NewAttr("hx-target", "")).
-				AddAttribute(NewAttr("hx-swap", "innerHTML")).
-				AddAttribute(NewAttr("placeholder", "")),
+				AddAttribute(NewDefaultAttr("name", "q")).
+				AddAttribute(NewDefaultAttr("type", "search")).
+				AddAttribute(NewDefaultAttr("hx-get", "")).
+				AddAttribute(NewDefaultAttr("hx-trigger", "keyup changed delay:500ms")).
+				AddAttribute(NewDefaultAttr("hx-target", "")).
+				AddAttribute(NewDefaultAttr("hx-swap", "innerHTML")).
+				AddAttribute(NewDefaultAttr("placeholder", "")),
 		},
 	}
 	for _, tt := range tests {

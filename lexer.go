@@ -212,7 +212,7 @@ func (l *Lexer) FindAttribute(runes []rune) (string, string, bool, int, error) {
 		return name, "", false, length, nil
 	}
 
-	// Equal sign is expected after attribute name for attributes with a value
+	// Equal sign is expected after attribute name for attributes with a Value
 	if runes[length] != equalSign {
 		return "", "", false, length, ErrInvalidCharacter
 	}

@@ -114,21 +114,30 @@ func (av AttrValues) Clone() AttrValues {
 type Attr struct {
 	Type         TokenType
 	Name         string
-	value        string
+	Value        string
+	DefaultValue string
 	HasEqualSign bool
+}
+
+func NewDefaultAttr(name, defaultValue string) *Attr {
+	return &Attr{
+		Name:         name,
+		DefaultValue: defaultValue,
+		HasEqualSign: true,
+	}
 }
 
 func NewAttr(name, value string) *Attr {
 	return &Attr{
 		Name:         name,
-		value:        value,
+		Value:        value,
 		HasEqualSign: true,
 	}
 }
 
 func (a *Attr) HasNoEqualSign() *Attr {
-	if a.value != "" {
-		panic(fmt.Sprintf("attribute '%s' has no equal sign, but has a value of '%s'", a.Name, a.value))
+	if a.Value != "" {
+		panic(fmt.Sprintf("attribute '%s' has no equal sign, but has a Value of '%s'", a.Name, a.Value))
 	}
 
 	a.HasEqualSign = false
@@ -139,21 +148,21 @@ func (a *Attr) HasNoEqualSign() *Attr {
 func (a *Attr) Clone() *Attr {
 	return &Attr{
 		Name:         a.Name,
-		value:        a.value,
+		Value:        a.Value,
 		HasEqualSign: a.HasEqualSign,
 	}
 }
 
 func (a *Attr) GetValue(counter *Counter, tabStopWrapper string) string {
-	if a == nil || a.value == "" {
-		return newTabStop(tabStopWrapper, counter.Get())
+	if a == nil || a.Value == "" {
+		return a.DefaultValue + newTabStop(tabStopWrapper, counter.Get())
 	}
 
-	if len(a.value) < 5 || a.value[:5] != "lorem" {
-		return a.value
+	if len(a.Value) < 5 || a.Value[:5] != "lorem" {
+		return a.Value
 	}
 
-	return lorem(a.value)
+	return lorem(a.Value)
 }
 
 type AttrList []*Attr

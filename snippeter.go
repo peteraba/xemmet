@@ -92,36 +92,36 @@ func (s *Snippeter) ApplyHTMXSnippets(token *TagToken) {
 		method := token.Name[2:]
 		token.
 			SetName("a").
-			FallbackAttribute(NewAttr("href", "https://")).
-			FallbackAttribute(NewAttr("hx-"+method, "https://")).
-			FallbackAttribute(NewAttr("hx-trigger", "click")).
-			FallbackAttribute(NewAttr("hx-target", "")).
-			FallbackAttribute(NewAttr("hx-swap", "innerHTML"))
+			FallbackAttribute(NewDefaultAttr("href", "https://")).
+			FallbackAttribute(NewDefaultAttr("hx-"+method, "https://")).
+			FallbackAttribute(NewDefaultAttr("hx-trigger", "click")).
+			FallbackAttribute(NewDefaultAttr("hx-target", "")).
+			FallbackAttribute(NewDefaultAttr("hx-swap", "innerHTML"))
 
 	case "button:get", "button:post", "button:put", "button:patch", "button:delete":
 		method := token.Name[7:]
 		token.
 			SetName("button").
-			FallbackAttribute(NewAttr("hx-"+method, "https://")).
-			FallbackAttribute(NewAttr("hx-trigger", "click")).
-			FallbackAttribute(NewAttr("hx-target", "")).
-			FallbackAttribute(NewAttr("hx-swap", "innerHTML"))
+			FallbackAttribute(NewDefaultAttr("hx-"+method, "https://")).
+			FallbackAttribute(NewDefaultAttr("hx-trigger", "click")).
+			FallbackAttribute(NewDefaultAttr("hx-target", "")).
+			FallbackAttribute(NewDefaultAttr("hx-swap", "innerHTML"))
 
 	case "input:q", "input:search":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("name", "q")).
-			FallbackAttribute(NewAttr("type", "search")).
-			FallbackAttribute(NewAttr("hx-get", "")).
-			FallbackAttribute(NewAttr("hx-trigger", "keyup changed delay:500ms")).
-			FallbackAttribute(NewAttr("hx-target", "")).
-			FallbackAttribute(NewAttr("hx-swap", "innerHTML")).
-			FallbackAttribute(NewAttr("placeholder", ""))
+			FallbackAttribute(NewDefaultAttr("name", "q")).
+			FallbackAttribute(NewDefaultAttr("type", "search")).
+			FallbackAttribute(NewDefaultAttr("hx-get", "")).
+			FallbackAttribute(NewDefaultAttr("hx-trigger", "keyup changed delay:500ms")).
+			FallbackAttribute(NewDefaultAttr("hx-target", "")).
+			FallbackAttribute(NewDefaultAttr("hx-swap", "innerHTML")).
+			FallbackAttribute(NewDefaultAttr("placeholder", ""))
 
 	case "script:htmx":
 		token.
 			SetName("script").
-			FallbackAttribute(NewAttr("src", "https://unpkg.com/htmx.org@1.9.10"))
+			FallbackAttribute(NewDefaultAttr("src", "https://unpkg.com/htmx.org@1.9.10"))
 	}
 }
 
@@ -129,171 +129,152 @@ func (s *Snippeter) ApplyHTMXSnippets(token *TagToken) {
 func (s *Snippeter) ApplyHTMLSnippets(token *TagToken) {
 	switch token.Name {
 	case "a":
-		token.FallbackAttribute(NewAttr("href", "#"))
+		token.FallbackAttribute(NewDefaultAttr("href", "#"))
 
 	case "a:blank":
 		token.
 			SetName("a").
-			FallbackAttribute(NewAttr("href", "https://")).
-			FallbackAttribute(NewAttr("target", "_blank")).
-			FallbackAttribute(NewAttr("rel", "noopener noreferrer"))
+			FallbackAttribute(NewDefaultAttr("href", "https://")).
+			FallbackAttribute(NewDefaultAttr("target", "_blank")).
+			FallbackAttribute(NewDefaultAttr("rel", "noopener noreferrer"))
 
 	case "a:link":
 		token.
 			SetName("a").
-			FallbackAttribute(NewAttr("href", "https://"))
+			FallbackAttribute(NewDefaultAttr("href", "https://"))
 
 	case "a:mail":
 		token.
 			SetName("a").
-			FallbackAttribute(NewAttr("href", "mailto:"))
+			FallbackAttribute(NewDefaultAttr("href", "mailto:"))
 
 	case "a:tel":
 		token.
 			SetName("a").
-			FallbackAttribute(NewAttr("href", "tel:+"))
+			FallbackAttribute(NewDefaultAttr("href", "tel:+"))
 
 	case "abbr", "acr", "acronym":
 		token.
 			SetName("abbr").
-			FallbackAttribute(NewAttr("title", ""))
+			FallbackAttribute(NewDefaultAttr("title", ""))
 
 	case "bdo":
 		token.
 			SetName("bdo").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("dir", ""))
+			FallbackAttribute(NewDefaultAttr("dir", ""))
 
 	case "bdo:r":
 		token.
 			SetName("bdo").
-			FallbackAttribute(NewAttr("dir", "rtl"))
+			FallbackAttribute(NewDefaultAttr("dir", "rtl"))
 
 	case "bdo:l":
 		token.
 			SetName("bdo").
-			FallbackAttribute(NewAttr("dir", "ltr"))
+			FallbackAttribute(NewDefaultAttr("dir", "ltr"))
 
 	case "link":
 		token.
 			SetName("link").
-			FallbackAttribute(NewAttr("rel", "stylesheet")).
-			FallbackAttribute(NewAttr("href", ""))
+			FallbackAttribute(NewDefaultAttr("rel", "stylesheet")).
+			FallbackAttribute(NewDefaultAttr("href", ""))
 
 	case "link:css":
 		token.
 			SetName("link").
-			FallbackAttribute(NewAttr("rel", "stylesheet")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("href", "style.css"))
+			FallbackAttribute(NewDefaultAttr("rel", "stylesheet")).
+			FallbackAttribute(NewDefaultAttr("href", "style.css"))
 
 	case "link:print":
 		token.
 			SetName("link").
-			FallbackAttribute(NewAttr("rel", "stylesheet")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("href", "style.css")).
-			FallbackAttribute(NewAttr("media", "print"))
+			FallbackAttribute(NewDefaultAttr("rel", "stylesheet")).
+			FallbackAttribute(NewDefaultAttr("href", "style.css")).
+			FallbackAttribute(NewDefaultAttr("media", "print"))
 
 	case "link:favicon":
 		token.
 			SetName("link").
-			FallbackAttribute(NewAttr("rel", "shortcut icon")).
-			FallbackAttribute(NewAttr("type", "image/x-icon")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("href", "favicon.ico"))
+			FallbackAttribute(NewDefaultAttr("rel", "shortcut icon")).
+			FallbackAttribute(NewDefaultAttr("type", "image/x-icon")).
+			FallbackAttribute(NewDefaultAttr("href", "favicon.ico"))
 
 	case "link:mf", "link:manifest":
 		token.
 			SetName("link").
-			FallbackAttribute(NewAttr("rel", "manifest")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("href", "manifest.json"))
+			FallbackAttribute(NewDefaultAttr("rel", "manifest")).
+			FallbackAttribute(NewDefaultAttr("href", "manifest.json"))
 
 	case "link:touch":
 		token.
 			SetName("link").
-			FallbackAttribute(NewAttr("rel", "apple-touch-icon")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("href", "favicon.png"))
+			FallbackAttribute(NewDefaultAttr("rel", "apple-touch-icon")).
+			FallbackAttribute(NewDefaultAttr("href", "favicon.png"))
 
 	case "link:rss":
 		token.
 			SetName("link").
-			FallbackAttribute(NewAttr("rel", "alternate")).
-			FallbackAttribute(NewAttr("type", "application/rss+xml")).
-			FallbackAttribute(NewAttr("title", "RSS")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("href", "rss.xml"))
+			FallbackAttribute(NewDefaultAttr("rel", "alternate")).
+			FallbackAttribute(NewDefaultAttr("type", "application/rss+xml")).
+			FallbackAttribute(NewDefaultAttr("title", "RSS")).
+			FallbackAttribute(NewDefaultAttr("href", "rss.xml"))
 
 	case "link:atom":
 		token.
 			SetName("link").
-			FallbackAttribute(NewAttr("rel", "alternate")).
-			FallbackAttribute(NewAttr("type", "application/atom+xml")).
-			FallbackAttribute(NewAttr("title", "Atom")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("href", "atom.xml"))
+			FallbackAttribute(NewDefaultAttr("rel", "alternate")).
+			FallbackAttribute(NewDefaultAttr("type", "application/atom+xml")).
+			FallbackAttribute(NewDefaultAttr("title", "Atom")).
+			FallbackAttribute(NewDefaultAttr("href", "atom.xml"))
 
 	case "link:im", "link:import":
 		token.
 			SetName("link").
-			FallbackAttribute(NewAttr("rel", "import")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("href", "component.html"))
+			FallbackAttribute(NewDefaultAttr("rel", "import")).
+			FallbackAttribute(NewDefaultAttr("href", "component.html"))
 
 	case "meta:utf":
 		token.
 			SetName("meta").
-			FallbackAttribute(NewAttr("http-equiv", "Content-Type")).
-			FallbackAttribute(NewAttr("content", "text/html;charset=UTF-8"))
+			FallbackAttribute(NewDefaultAttr("http-equiv", "Content-Type")).
+			FallbackAttribute(NewDefaultAttr("content", "text/html;charset=UTF-8"))
 
 	case "meta:vp":
 		token.
 			SetName("meta").
-			FallbackAttribute(NewAttr("name", "viewport")).
-			FallbackAttribute(NewAttr("content", "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"))
+			FallbackAttribute(NewDefaultAttr("name", "viewport")).
+			FallbackAttribute(NewDefaultAttr("content", "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"))
 
 	case "meta:compat":
 		token.
 			SetName("meta").
-			FallbackAttribute(NewAttr("http-equiv", "X-UA-Compatible")).
-			FallbackAttribute(NewAttr("content", "IE=7"))
+			FallbackAttribute(NewDefaultAttr("http-equiv", "X-UA-Compatible")).
+			FallbackAttribute(NewDefaultAttr("content", "IE=7"))
 
 	case "script:src":
 		token.
 			SetName("script").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("src", ""))
+			FallbackAttribute(NewDefaultAttr("src", ""))
 
 	case "img":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("src", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("alt", ""))
+			FallbackAttribute(NewDefaultAttr("src", "")).
+			FallbackAttribute(NewDefaultAttr("alt", ""))
 
 	case "img:s", "img:srcset", "ri:d", "ri:dpr":
 		token.
 			SetName("img").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("srcset", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("src", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("alt", ""))
+			FallbackAttribute(NewDefaultAttr("srcset", "")).
+			FallbackAttribute(NewDefaultAttr("src", "")).
+			FallbackAttribute(NewDefaultAttr("alt", ""))
 
 	case "img:z", "img:sizes", "ri:v", "ri:viewport":
 		token.
 			SetName("img").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("sizes", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("srcset", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("src", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("alt", ""))
+			FallbackAttribute(NewDefaultAttr("sizes", "")).
+			FallbackAttribute(NewDefaultAttr("srcset", "")).
+			FallbackAttribute(NewDefaultAttr("src", "")).
+			FallbackAttribute(NewDefaultAttr("alt", ""))
 
 	case "src":
 		token.
@@ -302,430 +283,345 @@ func (s *Snippeter) ApplyHTMLSnippets(token *TagToken) {
 	case "src:sc", "source:src":
 		token.
 			SetName("source").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("src", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("type", ""))
+			FallbackAttribute(NewDefaultAttr("src", "")).
+			FallbackAttribute(NewDefaultAttr("type", ""))
 
 	case "src:s", "source:srcset":
 		token.
 			SetName("source").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("srcset", ""))
+			FallbackAttribute(NewDefaultAttr("srcset", ""))
 
 	case "src:t", "source:type":
 		token.
 			SetName("source").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("srcset", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("type", "image/"))
+			FallbackAttribute(NewDefaultAttr("type", "image/"))
 
 	case "src:z", "source:sizes":
 		token.
 			SetName("source").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("sizes", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("srcset", ""))
+			FallbackAttribute(NewDefaultAttr("sizes", "")).
+			FallbackAttribute(NewDefaultAttr("srcset", ""))
 
 	case "src:m", "source:media":
 		token.
 			SetName("source").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("media", "(min-width: )")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("srcset", ""))
+			FallbackAttribute(NewDefaultAttr("media", "(min-width: )")).
+			FallbackAttribute(NewDefaultAttr("srcset", ""))
 
 	case "src:mt", "source:media:type":
 		token.
 			SetName("source").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("media", "(min-width: )")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("srcset", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("type", "image/"))
+			FallbackAttribute(NewDefaultAttr("media", "(min-width: )")).
+			FallbackAttribute(NewDefaultAttr("srcset", "")).
+			FallbackAttribute(NewDefaultAttr("type", "image/"))
 
 	case "src:mz", "source:media:sizes":
 		token.
 			SetName("source").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("media", "(min-width: )")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("sizes", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("srcset", ""))
+			FallbackAttribute(NewDefaultAttr("media", "(min-width: )")).
+			FallbackAttribute(NewDefaultAttr("sizes", "")).
+			FallbackAttribute(NewDefaultAttr("srcset", ""))
 
 	case "src:zt", "source:sizes:type":
 		token.
 			SetName("source").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("sizes", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("srcset", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("type", "image/"))
+			FallbackAttribute(NewDefaultAttr("sizes", "")).
+			FallbackAttribute(NewDefaultAttr("srcset", "")).
+			FallbackAttribute(NewDefaultAttr("type", "image/"))
 
 	case "iframe":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("src", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("frameborder", "0"))
+			FallbackAttribute(NewDefaultAttr("src", "")).
+			FallbackAttribute(NewDefaultAttr("frameborder", "0"))
 
 	case "embed":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("src", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("type", ""))
+			FallbackAttribute(NewDefaultAttr("src", "")).
+			FallbackAttribute(NewDefaultAttr("type", ""))
 
 	case "object":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("data", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("type", ""))
+			FallbackAttribute(NewDefaultAttr("data", "")).
+			FallbackAttribute(NewDefaultAttr("type", ""))
 
 	case "map":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "area", "area:d", "area:c", "area:r", "area:p":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("coords", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("href", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("alt", ""))
+			FallbackAttribute(NewDefaultAttr("coords", "")).
+			FallbackAttribute(NewDefaultAttr("href", "")).
+			FallbackAttribute(NewDefaultAttr("alt", ""))
 
 		switch token.Name {
 		case "area:d":
-			token.FallbackAttribute(NewAttr("shape", "default"))
+			token.FallbackAttribute(NewDefaultAttr("shape", "default"))
 
 		case "area:c":
-			token.FallbackAttribute(NewAttr("shape", "circle"))
+			token.FallbackAttribute(NewDefaultAttr("shape", "circle"))
 
 		case "area:r":
-			token.FallbackAttribute(NewAttr("shape", "rect"))
+			token.FallbackAttribute(NewDefaultAttr("shape", "rect"))
 
 		case "area:p":
-			token.FallbackAttribute(NewAttr("shape", "poly"))
+			token.FallbackAttribute(NewDefaultAttr("shape", "poly"))
 
 		default:
-			// TODO: Enable tab selection
-			token.FallbackAttribute(NewAttr("shape", ""))
+			token.FallbackAttribute(NewDefaultAttr("shape", ""))
 		}
 
 		token.SetName("area")
 
 	case "form":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("action", ""))
+			FallbackAttribute(NewDefaultAttr("action", ""))
 
 	case "form:get":
 		token.
 			SetName("form").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("action", "")).
-			FallbackAttribute(NewAttr("method", "get"))
+			FallbackAttribute(NewDefaultAttr("action", "")).
+			FallbackAttribute(NewDefaultAttr("method", "get"))
 
 	case "form:post":
 		token.
 			SetName("form").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("action", "")).
-			FallbackAttribute(NewAttr("method", "post"))
+			FallbackAttribute(NewDefaultAttr("action", "")).
+			FallbackAttribute(NewDefaultAttr("method", "post"))
 
 	case "label":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("for", ""))
+			FallbackAttribute(NewDefaultAttr("for", ""))
 
 	case "input":
 		token.
-			FallbackAttribute(NewAttr("type", "text")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "text")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:h", "input:hidden":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "hidden")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "hidden")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:t", "input:text":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "text")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "text")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:search":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "search")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "search")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:email":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "email")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "email")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:url":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "url")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "url")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:p", "input:password":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "password")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "password")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:datetime":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "datetime")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "datetime")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:date":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "date")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "date")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:datetime-local":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "datetime-local")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "datetime-local")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:month":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "month")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "month")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:week":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "week")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "week")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:time":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "time")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "time")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:tel":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "tel")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", "")).
-			FallbackAttribute(NewAttr("pattern", "[0-9]{3}-[0-9]{2}-[0-9]{3}"))
+			FallbackAttribute(NewDefaultAttr("type", "tel")).
+			FallbackAttribute(NewDefaultAttr("name", "")).
+			FallbackAttribute(NewDefaultAttr("pattern", "[0-9]{3}-[0-9]{2}-[0-9]{3}"))
 
 	case "input:number":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "number")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("min", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("max", ""))
+			FallbackAttribute(NewDefaultAttr("type", "number")).
+			FallbackAttribute(NewDefaultAttr("name", "")).
+			FallbackAttribute(NewDefaultAttr("min", "")).
+			FallbackAttribute(NewDefaultAttr("max", ""))
 
 	case "input:color":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "password")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("value", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "password")).
+			FallbackAttribute(NewDefaultAttr("Value", "")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:c", "input:checkbox":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "checkbox")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("value", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "checkbox")).
+			FallbackAttribute(NewDefaultAttr("Value", "")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:r", "input:radio":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "radio")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("value", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "radio")).
+			FallbackAttribute(NewDefaultAttr("Value", "")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:range":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "range")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("min", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("max", ""))
+			FallbackAttribute(NewDefaultAttr("type", "range")).
+			FallbackAttribute(NewDefaultAttr("name", "")).
+			FallbackAttribute(NewDefaultAttr("min", "")).
+			FallbackAttribute(NewDefaultAttr("max", ""))
 
 	case "input:f", "input:file":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "file")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", ""))
+			FallbackAttribute(NewDefaultAttr("type", "file")).
+			FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "input:s", "input:submit":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "submit")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("value", ""))
+			FallbackAttribute(NewDefaultAttr("type", "submit")).
+			FallbackAttribute(NewDefaultAttr("Value", ""))
 
 	case "input:i", "input:image":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "image")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("alt", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("src", ""))
+			FallbackAttribute(NewDefaultAttr("type", "image")).
+			FallbackAttribute(NewDefaultAttr("alt", "")).
+			FallbackAttribute(NewDefaultAttr("src", ""))
 
 	case "input:b", "input:btn", "input:button":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "button")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("value", ""))
+			FallbackAttribute(NewDefaultAttr("type", "button")).
+			FallbackAttribute(NewDefaultAttr("Value", ""))
 
 	case "input:reset":
 		token.
 			SetName("input").
-			FallbackAttribute(NewAttr("type", "reset"))
+			FallbackAttribute(NewDefaultAttr("type", "reset"))
 
 	case "select":
-		// TODO: Enable tab selection
-		token.FallbackAttribute(NewAttr("name", ""))
+		token.FallbackAttribute(NewDefaultAttr("name", ""))
 
 	case "select:d", "select:disabled":
 		token.
 			SetName("select").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", "")).
-			FallbackAttribute(NewAttr("disabled", "").HasNoEqualSign())
+			FallbackAttribute(NewDefaultAttr("name", "")).
+			FallbackAttribute(NewDefaultAttr("disabled", "").HasNoEqualSign())
 
 	case "opt", "option":
 		token.
 			SetName("select").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("value", ""))
+			FallbackAttribute(NewDefaultAttr("Value", ""))
 
 	case "textarea":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("name", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("cols", "30")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("rows", "10"))
+			FallbackAttribute(NewDefaultAttr("name", "")).
+			FallbackAttribute(NewDefaultAttr("cols", "30")).
+			FallbackAttribute(NewDefaultAttr("rows", "10"))
 
 	case "marquee":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("behavior", "")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("direction", ""))
+			FallbackAttribute(NewDefaultAttr("behavior", "")).
+			FallbackAttribute(NewDefaultAttr("direction", ""))
 
 	case "menu:c":
 		token.
 			SetName("menu").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("type", "context"))
+			FallbackAttribute(NewDefaultAttr("type", "context"))
 
 	case "menu:t":
 		token.
 			SetName("menu").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("type", "toolbar"))
+			FallbackAttribute(NewDefaultAttr("type", "toolbar"))
 
 	case "video":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("src", ""))
+			FallbackAttribute(NewDefaultAttr("src", ""))
 
 	case "audio":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("src", ""))
+			FallbackAttribute(NewDefaultAttr("src", ""))
 
 	case "btn:s", "button:s", "button:submit":
 		token.
 			SetName("button").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("type", "submit"))
+			FallbackAttribute(NewDefaultAttr("type", "submit"))
 
 	case "btn:r", "button:l", "button:reset":
 		token.
 			SetName("button").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("type", "reset"))
+			FallbackAttribute(NewDefaultAttr("type", "reset"))
 
 	case "btn:b", "button:b", "button:button":
 		token.
 			SetName("button").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("type", "button"))
+			FallbackAttribute(NewDefaultAttr("type", "button"))
 
 	case "btn:d", "button:d", "button:disabled":
 		token.
 			SetName("button").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("disabled", "").HasNoEqualSign())
+			FallbackAttribute(NewDefaultAttr("disabled", "").HasNoEqualSign())
 
 	case "fst:d", "fset:d", "fieldset:d", "fieldset:disabled":
 		token.
 			SetName("fieldset").
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("disabled", "").HasNoEqualSign())
+			FallbackAttribute(NewDefaultAttr("disabled", "").HasNoEqualSign())
 
 	case "data":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("value", ""))
+			FallbackAttribute(NewDefaultAttr("Value", ""))
 
 	case "meter":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("value", ""))
+			FallbackAttribute(NewDefaultAttr("Value", ""))
 
 	case "time":
 		token.
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("datetime", ""))
+			FallbackAttribute(NewDefaultAttr("datetime", ""))
 	}
 }
