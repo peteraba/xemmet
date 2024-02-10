@@ -88,13 +88,22 @@ func (s *Snippeter) ApplySnippets(token *TagToken) Token {
 
 func (s *Snippeter) ApplyHTMXSnippets(token *TagToken) {
 	switch token.Name {
+	case "a:get", "a:post", "a:put", "a:patch", "a:delete":
+		method := token.Name[2:]
+		token.
+			SetName("a").
+			FallbackAttribute(NewAttr("href", "https://")).
+			FallbackAttribute(NewAttr("hx-"+method, "https://")).
+			FallbackAttribute(NewAttr("hx-trigger", "click")).
+			FallbackAttribute(NewAttr("hx-target", "")).
+			FallbackAttribute(NewAttr("hx-swap", "innerHTML"))
+
 	case "button:get", "button:post", "button:put", "button:patch", "button:delete":
+		method := token.Name[7:]
 		token.
 			SetName("button").
+			FallbackAttribute(NewAttr("hx-"+method, "https://")).
 			FallbackAttribute(NewAttr("hx-trigger", "click")).
-			// TODO: Enable tab selection
-			FallbackAttribute(NewAttr("hx-"+token.Name[7:], "")).
-			// TODO: Enable tab selection
 			FallbackAttribute(NewAttr("hx-target", "")).
 			FallbackAttribute(NewAttr("hx-swap", "innerHTML"))
 
@@ -103,10 +112,8 @@ func (s *Snippeter) ApplyHTMXSnippets(token *TagToken) {
 			SetName("input").
 			FallbackAttribute(NewAttr("name", "q")).
 			FallbackAttribute(NewAttr("type", "search")).
-			// TODO: Enable tab selection
 			FallbackAttribute(NewAttr("hx-get", "")).
 			FallbackAttribute(NewAttr("hx-trigger", "keyup changed delay:500ms")).
-			// TODO: Enable tab selection
 			FallbackAttribute(NewAttr("hx-target", "")).
 			FallbackAttribute(NewAttr("hx-swap", "innerHTML")).
 			FallbackAttribute(NewAttr("placeholder", ""))
@@ -114,7 +121,6 @@ func (s *Snippeter) ApplyHTMXSnippets(token *TagToken) {
 	case "script:htmx":
 		token.
 			SetName("script").
-			// TODO: Enable tab selection
 			FallbackAttribute(NewAttr("src", "https://unpkg.com/htmx.org@1.9.10"))
 	}
 }

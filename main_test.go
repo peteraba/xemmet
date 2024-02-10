@@ -119,6 +119,29 @@ func TestXemmet(t *testing.T) {
     </div>`,
 			wantErr: RequireNoError,
 		},
+		// TODO: Fix BR tag
+		{
+			name: "very simple htmx - no tab stops, depth = 2, anchor used",
+			args: args{
+				mode:           ModeHTMX,
+				snippet:        `div.container>h1.h1+ul.list>li.item#item$$*3^a:get.button+br`,
+				indentation:    "  ",
+				depth:          2,
+				multiline:      true,
+				tabStopWrapper: "",
+			},
+			want: `<div class="container">
+      <h1 class="h1"></h1>
+      <ul class="list">
+        <li id="item01" class="item"></li>
+        <li id="item02" class="item"></li>
+        <li id="item03" class="item"></li>
+      </ul>
+      <a href="https://" hx-get="https://" hx-trigger="click" hx-target="" hx-swap="innerHTML" class="button"></a>
+      <br></br>
+    </div>`,
+			wantErr: RequireNoError,
+		},
 	}
 	for _, tt := range tests {
 		tt := tt
