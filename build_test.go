@@ -5,8 +5,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"github.com/peteraba/xemmet/counter"
 )
 
 func TestBuild(t *testing.T) {
@@ -645,13 +643,12 @@ func TestBuild(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			counter.ResetGlobalTabStopCounter()
-
 			builder := &strings.Builder{}
+			counter := NewCounter()
 
 			elements := Build(tt.args.tokens, tt.args.num, tt.args.siblingCount)
 
-			elements.HTML(builder, tt.args.mode, tt.args.indentation, tt.args.depth, tt.args.multiline, tt.args.tabStopWrapper)
+			elements.HTML(builder, counter, tt.args.mode, tt.args.indentation, tt.args.depth, tt.args.multiline, tt.args.tabStopWrapper)
 
 			assert.Equal(t, tt.wantHTML, builder.String())
 		})

@@ -102,10 +102,12 @@ func TestNumber(t *testing.T) {
 func TestAttr_GetValue(t *testing.T) {
 	t.Parallel()
 
+	counter := NewCounter()
+
 	t.Run("lorem ipsum", func(t *testing.T) {
 		t.Parallel()
 
-		got := NewAttr("foo", "lorem").GetValue("")
+		got := NewAttr("foo", "lorem").GetValue(counter, "")
 
 		assert.NotEmpty(t, got)
 		assert.Equal(t, 4, strings.Count(got, " "))
@@ -114,7 +116,7 @@ func TestAttr_GetValue(t *testing.T) {
 	t.Run("lorem ipsum 25", func(t *testing.T) {
 		t.Parallel()
 
-		got := NewAttr("foo", "lorem25").GetValue("")
+		got := NewAttr("foo", "lorem25").GetValue(counter, "")
 
 		assert.NotEmpty(t, got)
 		assert.Equal(t, 24, strings.Count(got, " "))
@@ -152,7 +154,9 @@ func TestAttr_GetValue(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got := tt.sut.GetValue(tt.args.tabStopWrapper)
+			counter := NewCounter()
+
+			got := tt.sut.GetValue(counter, tt.args.tabStopWrapper)
 
 			assert.Equal(t, tt.want, got)
 		})

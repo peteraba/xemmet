@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"strings"
-
-	"github.com/peteraba/xemmet/counter"
 )
 
 // nolint: gochecknoglobals
@@ -70,7 +68,7 @@ func (e Elem) isShortTagXML(mode Mode) bool {
 	return true
 }
 
-func (e Elem) HTML(builder *strings.Builder, mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) {
+func (e Elem) HTML(builder *strings.Builder, counter *Counter, mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) {
 	xmlShortTag := e.isShortTagXML(mode) && tabStopWrapper == ""
 	htmlShortTag := e.isShortTagHTML(mode) && tabStopWrapper == ""
 	shortTag := xmlShortTag || htmlShortTag
@@ -87,7 +85,7 @@ func (e Elem) HTML(builder *strings.Builder, mode Mode, indentation string, dept
 		return
 	}
 
-	e.OpeningTag(builder, currentIndentation, xmlShortTag, multiline, tabStopWrapper)
+	e.OpeningTag(builder, counter, currentIndentation, xmlShortTag, multiline, tabStopWrapper)
 
 	if multiline && (!emptyTag || shortTag) {
 		builder.WriteString("\n")
@@ -96,9 +94,9 @@ func (e Elem) HTML(builder *strings.Builder, mode Mode, indentation string, dept
 	if !shortTag {
 		e.TextOnly(builder, currentIndentation, indentation, multiline)
 
-		e.TabStop(builder, tabStopWrapper)
+		e.TabStop(builder, counter, tabStopWrapper)
 
-		e.RenderChildren(builder, mode, indentation, depth, multiline, tabStopWrapper)
+		e.RenderChildren(builder, counter, mode, indentation, depth, multiline, tabStopWrapper)
 
 		e.ClosingTag(builder, currentIndentation, multiline, emptyTag)
 	}
@@ -128,7 +126,7 @@ func (e Elem) TextOnly(builder *strings.Builder, currentIndentation, indentation
 	}
 }
 
-func (e Elem) OpeningTag(builder *strings.Builder, currentIndentation string, xmlShortTag, multiline bool, tabStopWrapper string) {
+func (e Elem) OpeningTag(builder *strings.Builder, counter *Counter, currentIndentation string, xmlShortTag, multiline bool, tabStopWrapper string) {
 	if multiline {
 		builder.WriteString(currentIndentation)
 	}
@@ -146,7 +144,7 @@ func (e Elem) OpeningTag(builder *strings.Builder, currentIndentation string, xm
 
 	if len(e.Attributes) > 0 {
 		builder.WriteString(" ")
-		builder.WriteString(e.GetAttrs(tabStopWrapper))
+		builder.WriteString(e.GetAttrs(counter, tabStopWrapper))
 	}
 
 	if len(e.Classes) > 0 {
@@ -162,23 +160,23 @@ func (e Elem) OpeningTag(builder *strings.Builder, currentIndentation string, xm
 	builder.WriteString(">")
 }
 
-func (e Elem) TabStop(builder *strings.Builder, tabStopWrapper string) {
+func (e Elem) TabStop(builder *strings.Builder, counter *Counter, tabStopWrapper string) {
 	if len(e.Children) != 0 {
 		return
 	}
 
-	builder.WriteString(newTabStop(tabStopWrapper))
+	builder.WriteString(newTabStop(tabStopWrapper, counter.Get()))
 }
 
-func newTabStop(tabStopWrapper string) string {
+func newTabStop(tabStopWrapper string, count int) string {
 	if tabStopWrapper == "" {
 		return ""
 	}
 
-	return fmt.Sprintf("%sSTOP%d%s", tabStopWrapper, counter.GetGlobalTabStopCounter(), tabStopWrapper)
+	return fmt.Sprintf("%sSTOP%d%s", tabStopWrapper, count, tabStopWrapper)
 }
 
-func (e Elem) RenderChildren(builder *strings.Builder, mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) {
+func (e Elem) RenderChildren(builder *strings.Builder, counter *Counter, mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) {
 	if len(e.Children) == 0 {
 		return
 	}
@@ -186,7 +184,7 @@ func (e Elem) RenderChildren(builder *strings.Builder, mode Mode, indentation st
 	nextDepth := depth + 1
 
 	for _, child := range e.Children {
-		child.HTML(builder, mode, indentation, nextDepth, multiline, tabStopWrapper)
+		child.HTML(builder, counter, mode, indentation, nextDepth, multiline, tabStopWrapper)
 	}
 }
 
@@ -242,11 +240,11 @@ func (e Elem) GetClass() string {
 	return strings.Join(classes, " ")
 }
 
-func (e Elem) GetAttrs(tabStopWrapper string) string {
+func (e Elem) GetAttrs(counter *Counter, tabStopWrapper string) string {
 	attrs := []string{}
 	for _, attr := range e.Attributes {
 		// TODO: escape attribute values
-		attrs = append(attrs, fmt.Sprintf(`%s="%s"`, attr.Name, attr.GetValue(tabStopWrapper)))
+		attrs = append(attrs, fmt.Sprintf(`%s="%s"`, attr.Name, attr.GetValue(counter, tabStopWrapper)))
 	}
 
 	return strings.Join(attrs, " ")
@@ -265,8 +263,8 @@ func (el ElemList) Clone(num, siblingCount int) ElemList {
 	return newEl
 }
 
-func (el ElemList) HTML(builder *strings.Builder, mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) {
+func (el ElemList) HTML(builder *strings.Builder, counter *Counter, mode Mode, indentation string, depth int, multiline bool, tabStopWrapper string) {
 	for _, e := range el {
-		e.HTML(builder, mode, indentation, depth, multiline, tabStopWrapper)
+		e.HTML(builder, counter, mode, indentation, depth, multiline, tabStopWrapper)
 	}
 }
