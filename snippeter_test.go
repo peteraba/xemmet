@@ -78,7 +78,7 @@ func TestSnippeter_Walk(t *testing.T) {
 				AddAttribute(NewDefaultAttr("coords", "")).
 				AddAttribute(NewDefaultAttr("href", "")).
 				AddAttribute(NewDefaultAttr("alt", "")).
-				AddAttribute(NewDefaultAttr("shape", "default")),
+				AddAttribute(NewAttr("shape", "default")),
 		},
 		{
 			name: "bq",
@@ -117,13 +117,13 @@ func TestSnippeter_Walk(t *testing.T) {
 				},
 			},
 			want: NewTagToken("input", 1).
-				AddAttribute(NewDefaultAttr("name", "q")).
-				AddAttribute(NewDefaultAttr("type", "search")).
-				AddAttribute(NewDefaultAttr("hx-get", "")).
+				AddAttribute(NewAttr("name", "q")).
+				AddAttribute(NewAttr("type", "search")).
+				AddAttribute(NewAttr("hx-get", "")).
 				AddAttribute(NewDefaultAttr("hx-trigger", "keyup changed delay:500ms")).
-				AddAttribute(NewDefaultAttr("hx-target", "")).
-				AddAttribute(NewDefaultAttr("hx-swap", "innerHTML")).
-				AddAttribute(NewDefaultAttr("placeholder", "")),
+				AddAttribute(NewAttr("hx-target", "")).
+				AddAttribute(NewAttr("hx-swap", "innerHTML")).
+				AddAttribute(NewAttr("placeholder", "")),
 		},
 	}
 	for _, tt := range tests {

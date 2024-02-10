@@ -94,28 +94,28 @@ func (s *Snippeter) ApplyHTMXSnippets(token *TagToken) {
 			SetName("a").
 			FallbackAttribute(NewDefaultAttr("href", "https://")).
 			FallbackAttribute(NewDefaultAttr("hx-"+method, "https://")).
-			FallbackAttribute(NewDefaultAttr("hx-trigger", "click")).
+			FallbackAttribute(NewAttr("hx-trigger", "click")).
 			FallbackAttribute(NewDefaultAttr("hx-target", "")).
-			FallbackAttribute(NewDefaultAttr("hx-swap", "innerHTML"))
+			FallbackAttribute(NewAttr("hx-swap", "innerHTML"))
 
 	case "button:get", "button:post", "button:put", "button:patch", "button:delete":
 		method := token.Name[7:]
 		token.
 			SetName("button").
 			FallbackAttribute(NewDefaultAttr("hx-"+method, "https://")).
-			FallbackAttribute(NewDefaultAttr("hx-trigger", "click")).
+			FallbackAttribute(NewAttr("hx-trigger", "click")).
 			FallbackAttribute(NewDefaultAttr("hx-target", "")).
-			FallbackAttribute(NewDefaultAttr("hx-swap", "innerHTML"))
+			FallbackAttribute(NewAttr("hx-swap", "innerHTML"))
 
 	case "input:q", "input:search":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("name", "q")).
-			FallbackAttribute(NewDefaultAttr("type", "search")).
+			FallbackAttribute(NewAttr("name", "q")).
+			FallbackAttribute(NewAttr("type", "search")).
 			FallbackAttribute(NewDefaultAttr("hx-get", "")).
 			FallbackAttribute(NewDefaultAttr("hx-trigger", "keyup changed delay:500ms")).
 			FallbackAttribute(NewDefaultAttr("hx-target", "")).
-			FallbackAttribute(NewDefaultAttr("hx-swap", "innerHTML")).
+			FallbackAttribute(NewAttr("hx-swap", "innerHTML")).
 			FallbackAttribute(NewDefaultAttr("placeholder", ""))
 
 	case "script:htmx":
@@ -135,8 +135,8 @@ func (s *Snippeter) ApplyHTMLSnippets(token *TagToken) {
 		token.
 			SetName("a").
 			FallbackAttribute(NewDefaultAttr("href", "https://")).
-			FallbackAttribute(NewDefaultAttr("target", "_blank")).
-			FallbackAttribute(NewDefaultAttr("rel", "noopener noreferrer"))
+			FallbackAttribute(NewAttr("target", "_blank")).
+			FallbackAttribute(NewAttr("rel", "noopener noreferrer"))
 
 	case "a:link":
 		token.
@@ -156,125 +156,125 @@ func (s *Snippeter) ApplyHTMLSnippets(token *TagToken) {
 	case "abbr", "acr", "acronym":
 		token.
 			SetName("abbr").
-			FallbackAttribute(NewDefaultAttr("title", ""))
+			FallbackAttribute(NewAttr("title", ""))
 
 	case "bdo":
 		token.
 			SetName("bdo").
-			FallbackAttribute(NewDefaultAttr("dir", ""))
+			FallbackAttribute(NewAttr("dir", ""))
 
 	case "bdo:r":
 		token.
 			SetName("bdo").
-			FallbackAttribute(NewDefaultAttr("dir", "rtl"))
+			FallbackAttribute(NewAttr("dir", "rtl"))
 
 	case "bdo:l":
 		token.
 			SetName("bdo").
-			FallbackAttribute(NewDefaultAttr("dir", "ltr"))
+			FallbackAttribute(NewAttr("dir", "ltr"))
 
 	case "link":
 		token.
 			SetName("link").
-			FallbackAttribute(NewDefaultAttr("rel", "stylesheet")).
-			FallbackAttribute(NewDefaultAttr("href", ""))
+			FallbackAttribute(NewAttr("rel", "stylesheet")).
+			FallbackAttribute(NewAttr("href", ""))
 
 	case "link:css":
 		token.
 			SetName("link").
-			FallbackAttribute(NewDefaultAttr("rel", "stylesheet")).
-			FallbackAttribute(NewDefaultAttr("href", "style.css"))
+			FallbackAttribute(NewAttr("rel", "stylesheet")).
+			FallbackAttribute(NewAttr("href", "style.css"))
 
 	case "link:print":
 		token.
 			SetName("link").
-			FallbackAttribute(NewDefaultAttr("rel", "stylesheet")).
-			FallbackAttribute(NewDefaultAttr("href", "style.css")).
-			FallbackAttribute(NewDefaultAttr("media", "print"))
+			FallbackAttribute(NewAttr("rel", "stylesheet")).
+			FallbackAttribute(NewAttr("href", "style.css")).
+			FallbackAttribute(NewAttr("media", "print"))
 
 	case "link:favicon":
 		token.
 			SetName("link").
-			FallbackAttribute(NewDefaultAttr("rel", "shortcut icon")).
-			FallbackAttribute(NewDefaultAttr("type", "image/x-icon")).
-			FallbackAttribute(NewDefaultAttr("href", "favicon.ico"))
+			FallbackAttribute(NewAttr("rel", "shortcut icon")).
+			FallbackAttribute(NewAttr("type", "image/x-icon")).
+			FallbackAttribute(NewAttr("href", "favicon.ico"))
 
 	case "link:mf", "link:manifest":
 		token.
 			SetName("link").
-			FallbackAttribute(NewDefaultAttr("rel", "manifest")).
-			FallbackAttribute(NewDefaultAttr("href", "manifest.json"))
+			FallbackAttribute(NewAttr("rel", "manifest")).
+			FallbackAttribute(NewAttr("href", "manifest.json"))
 
 	case "link:touch":
 		token.
 			SetName("link").
-			FallbackAttribute(NewDefaultAttr("rel", "apple-touch-icon")).
-			FallbackAttribute(NewDefaultAttr("href", "favicon.png"))
+			FallbackAttribute(NewAttr("rel", "apple-touch-icon")).
+			FallbackAttribute(NewAttr("href", "favicon.png"))
 
 	case "link:rss":
 		token.
 			SetName("link").
-			FallbackAttribute(NewDefaultAttr("rel", "alternate")).
-			FallbackAttribute(NewDefaultAttr("type", "application/rss+xml")).
-			FallbackAttribute(NewDefaultAttr("title", "RSS")).
-			FallbackAttribute(NewDefaultAttr("href", "rss.xml"))
+			FallbackAttribute(NewAttr("rel", "alternate")).
+			FallbackAttribute(NewAttr("type", "application/rss+xml")).
+			FallbackAttribute(NewAttr("title", "RSS")).
+			FallbackAttribute(NewAttr("href", "rss.xml"))
 
 	case "link:atom":
 		token.
 			SetName("link").
-			FallbackAttribute(NewDefaultAttr("rel", "alternate")).
-			FallbackAttribute(NewDefaultAttr("type", "application/atom+xml")).
-			FallbackAttribute(NewDefaultAttr("title", "Atom")).
-			FallbackAttribute(NewDefaultAttr("href", "atom.xml"))
+			FallbackAttribute(NewAttr("rel", "alternate")).
+			FallbackAttribute(NewAttr("type", "application/atom+xml")).
+			FallbackAttribute(NewAttr("title", "Atom")).
+			FallbackAttribute(NewAttr("href", "atom.xml"))
 
 	case "link:im", "link:import":
 		token.
 			SetName("link").
-			FallbackAttribute(NewDefaultAttr("rel", "import")).
-			FallbackAttribute(NewDefaultAttr("href", "component.html"))
+			FallbackAttribute(NewAttr("rel", "import")).
+			FallbackAttribute(NewAttr("href", "component.html"))
 
 	case "meta:utf":
 		token.
 			SetName("meta").
-			FallbackAttribute(NewDefaultAttr("http-equiv", "Content-Type")).
-			FallbackAttribute(NewDefaultAttr("content", "text/html;charset=UTF-8"))
+			FallbackAttribute(NewAttr("http-equiv", "Content-Type")).
+			FallbackAttribute(NewAttr("content", "text/html;charset=UTF-8"))
 
 	case "meta:vp":
 		token.
 			SetName("meta").
-			FallbackAttribute(NewDefaultAttr("name", "viewport")).
-			FallbackAttribute(NewDefaultAttr("content", "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"))
+			FallbackAttribute(NewAttr("name", "viewport")).
+			FallbackAttribute(NewAttr("content", "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"))
 
 	case "meta:compat":
 		token.
 			SetName("meta").
-			FallbackAttribute(NewDefaultAttr("http-equiv", "X-UA-Compatible")).
-			FallbackAttribute(NewDefaultAttr("content", "IE=7"))
+			FallbackAttribute(NewAttr("http-equiv", "X-UA-Compatible")).
+			FallbackAttribute(NewAttr("content", "IE=7"))
 
 	case "script:src":
 		token.
 			SetName("script").
-			FallbackAttribute(NewDefaultAttr("src", ""))
+			FallbackAttribute(NewAttr("src", ""))
 
 	case "img":
 		token.
-			FallbackAttribute(NewDefaultAttr("src", "")).
-			FallbackAttribute(NewDefaultAttr("alt", ""))
+			FallbackAttribute(NewAttr("src", "")).
+			FallbackAttribute(NewAttr("alt", ""))
 
 	case "img:s", "img:srcset", "ri:d", "ri:dpr":
 		token.
 			SetName("img").
-			FallbackAttribute(NewDefaultAttr("srcset", "")).
-			FallbackAttribute(NewDefaultAttr("src", "")).
-			FallbackAttribute(NewDefaultAttr("alt", ""))
+			FallbackAttribute(NewAttr("srcset", "")).
+			FallbackAttribute(NewAttr("src", "")).
+			FallbackAttribute(NewAttr("alt", ""))
 
 	case "img:z", "img:sizes", "ri:v", "ri:viewport":
 		token.
 			SetName("img").
-			FallbackAttribute(NewDefaultAttr("sizes", "")).
-			FallbackAttribute(NewDefaultAttr("srcset", "")).
-			FallbackAttribute(NewDefaultAttr("src", "")).
-			FallbackAttribute(NewDefaultAttr("alt", ""))
+			FallbackAttribute(NewAttr("sizes", "")).
+			FallbackAttribute(NewAttr("srcset", "")).
+			FallbackAttribute(NewAttr("src", "")).
+			FallbackAttribute(NewAttr("alt", ""))
 
 	case "src":
 		token.
@@ -283,13 +283,13 @@ func (s *Snippeter) ApplyHTMLSnippets(token *TagToken) {
 	case "src:sc", "source:src":
 		token.
 			SetName("source").
-			FallbackAttribute(NewDefaultAttr("src", "")).
-			FallbackAttribute(NewDefaultAttr("type", ""))
+			FallbackAttribute(NewAttr("src", "")).
+			FallbackAttribute(NewAttr("type", ""))
 
 	case "src:s", "source:srcset":
 		token.
 			SetName("source").
-			FallbackAttribute(NewDefaultAttr("srcset", ""))
+			FallbackAttribute(NewAttr("srcset", ""))
 
 	case "src:t", "source:type":
 		token.
@@ -299,329 +299,329 @@ func (s *Snippeter) ApplyHTMLSnippets(token *TagToken) {
 	case "src:z", "source:sizes":
 		token.
 			SetName("source").
-			FallbackAttribute(NewDefaultAttr("sizes", "")).
-			FallbackAttribute(NewDefaultAttr("srcset", ""))
+			FallbackAttribute(NewAttr("sizes", "")).
+			FallbackAttribute(NewAttr("srcset", ""))
 
 	case "src:m", "source:media":
 		token.
 			SetName("source").
 			FallbackAttribute(NewDefaultAttr("media", "(min-width: )")).
-			FallbackAttribute(NewDefaultAttr("srcset", ""))
+			FallbackAttribute(NewAttr("srcset", ""))
 
 	case "src:mt", "source:media:type":
 		token.
 			SetName("source").
 			FallbackAttribute(NewDefaultAttr("media", "(min-width: )")).
-			FallbackAttribute(NewDefaultAttr("srcset", "")).
+			FallbackAttribute(NewAttr("srcset", "")).
 			FallbackAttribute(NewDefaultAttr("type", "image/"))
 
 	case "src:mz", "source:media:sizes":
 		token.
 			SetName("source").
 			FallbackAttribute(NewDefaultAttr("media", "(min-width: )")).
-			FallbackAttribute(NewDefaultAttr("sizes", "")).
-			FallbackAttribute(NewDefaultAttr("srcset", ""))
+			FallbackAttribute(NewAttr("sizes", "")).
+			FallbackAttribute(NewAttr("srcset", ""))
 
 	case "src:zt", "source:sizes:type":
 		token.
 			SetName("source").
-			FallbackAttribute(NewDefaultAttr("sizes", "")).
-			FallbackAttribute(NewDefaultAttr("srcset", "")).
+			FallbackAttribute(NewAttr("sizes", "")).
+			FallbackAttribute(NewAttr("srcset", "")).
 			FallbackAttribute(NewDefaultAttr("type", "image/"))
 
 	case "iframe":
 		token.
-			FallbackAttribute(NewDefaultAttr("src", "")).
+			FallbackAttribute(NewAttr("src", "")).
 			FallbackAttribute(NewDefaultAttr("frameborder", "0"))
 
 	case "embed":
 		token.
-			FallbackAttribute(NewDefaultAttr("src", "")).
-			FallbackAttribute(NewDefaultAttr("type", ""))
+			FallbackAttribute(NewAttr("src", "")).
+			FallbackAttribute(NewAttr("type", ""))
 
 	case "object":
 		token.
-			FallbackAttribute(NewDefaultAttr("data", "")).
-			FallbackAttribute(NewDefaultAttr("type", ""))
+			FallbackAttribute(NewAttr("data", "")).
+			FallbackAttribute(NewAttr("type", ""))
 
 	case "map":
 		token.
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "area", "area:d", "area:c", "area:r", "area:p":
 		token.
-			FallbackAttribute(NewDefaultAttr("coords", "")).
-			FallbackAttribute(NewDefaultAttr("href", "")).
-			FallbackAttribute(NewDefaultAttr("alt", ""))
+			FallbackAttribute(NewAttr("coords", "")).
+			FallbackAttribute(NewAttr("href", "")).
+			FallbackAttribute(NewAttr("alt", ""))
 
 		switch token.Name {
 		case "area:d":
-			token.FallbackAttribute(NewDefaultAttr("shape", "default"))
+			token.FallbackAttribute(NewAttr("shape", "default"))
 
 		case "area:c":
-			token.FallbackAttribute(NewDefaultAttr("shape", "circle"))
+			token.FallbackAttribute(NewAttr("shape", "circle"))
 
 		case "area:r":
-			token.FallbackAttribute(NewDefaultAttr("shape", "rect"))
+			token.FallbackAttribute(NewAttr("shape", "rect"))
 
 		case "area:p":
-			token.FallbackAttribute(NewDefaultAttr("shape", "poly"))
+			token.FallbackAttribute(NewAttr("shape", "poly"))
 
 		default:
-			token.FallbackAttribute(NewDefaultAttr("shape", ""))
+			token.FallbackAttribute(NewAttr("shape", ""))
 		}
 
 		token.SetName("area")
 
 	case "form":
 		token.
-			FallbackAttribute(NewDefaultAttr("action", ""))
+			FallbackAttribute(NewDefaultAttr("action", "post"))
 
 	case "form:get":
 		token.
 			SetName("form").
-			FallbackAttribute(NewDefaultAttr("action", "")).
-			FallbackAttribute(NewDefaultAttr("method", "get"))
+			FallbackAttribute(NewAttr("action", "")).
+			FallbackAttribute(NewAttr("method", "get"))
 
 	case "form:post":
 		token.
 			SetName("form").
-			FallbackAttribute(NewDefaultAttr("action", "")).
-			FallbackAttribute(NewDefaultAttr("method", "post"))
+			FallbackAttribute(NewAttr("action", "")).
+			FallbackAttribute(NewAttr("method", "post"))
 
 	case "label":
 		token.
-			FallbackAttribute(NewDefaultAttr("for", ""))
+			FallbackAttribute(NewAttr("for", ""))
 
 	case "input":
 		token.
-			FallbackAttribute(NewDefaultAttr("type", "text")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "text")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:h", "input:hidden":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "hidden")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "hidden")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:t", "input:text":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "text")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "text")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:search":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "search")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "search")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:email":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "email")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "email")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:url":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "url")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "url")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:p", "input:password":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "password")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "password")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:datetime":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "datetime")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "datetime")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:date":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "date")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "date")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:datetime-local":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "datetime-local")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "datetime-local")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:month":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "month")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "month")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:week":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "week")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "week")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:time":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "time")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "time")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:tel":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "tel")).
-			FallbackAttribute(NewDefaultAttr("name", "")).
-			FallbackAttribute(NewDefaultAttr("pattern", "[0-9]{3}-[0-9]{2}-[0-9]{3}"))
+			FallbackAttribute(NewAttr("type", "tel")).
+			FallbackAttribute(NewAttr("name", "")).
+			FallbackAttribute(NewAttr("pattern", "[0-9]{3}-[0-9]{2}-[0-9]{3}"))
 
 	case "input:number":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "number")).
-			FallbackAttribute(NewDefaultAttr("name", "")).
-			FallbackAttribute(NewDefaultAttr("min", "")).
+			FallbackAttribute(NewAttr("type", "number")).
+			FallbackAttribute(NewAttr("name", "")).
+			FallbackAttribute(NewAttr("min", "")).
 			FallbackAttribute(NewDefaultAttr("max", ""))
 
 	case "input:color":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "password")).
-			FallbackAttribute(NewDefaultAttr("Value", "")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "password")).
+			FallbackAttribute(NewAttr("Value", "")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:c", "input:checkbox":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "checkbox")).
-			FallbackAttribute(NewDefaultAttr("Value", "")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "checkbox")).
+			FallbackAttribute(NewAttr("Value", "")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:r", "input:radio":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "radio")).
-			FallbackAttribute(NewDefaultAttr("Value", "")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "radio")).
+			FallbackAttribute(NewAttr("Value", "")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:range":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "range")).
-			FallbackAttribute(NewDefaultAttr("name", "")).
-			FallbackAttribute(NewDefaultAttr("min", "")).
-			FallbackAttribute(NewDefaultAttr("max", ""))
+			FallbackAttribute(NewAttr("type", "range")).
+			FallbackAttribute(NewAttr("name", "")).
+			FallbackAttribute(NewAttr("min", "")).
+			FallbackAttribute(NewAttr("max", ""))
 
 	case "input:f", "input:file":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "file")).
-			FallbackAttribute(NewDefaultAttr("name", ""))
+			FallbackAttribute(NewAttr("type", "file")).
+			FallbackAttribute(NewAttr("name", ""))
 
 	case "input:s", "input:submit":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "submit")).
-			FallbackAttribute(NewDefaultAttr("Value", ""))
+			FallbackAttribute(NewAttr("type", "submit")).
+			FallbackAttribute(NewAttr("Value", ""))
 
 	case "input:i", "input:image":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "image")).
-			FallbackAttribute(NewDefaultAttr("alt", "")).
-			FallbackAttribute(NewDefaultAttr("src", ""))
+			FallbackAttribute(NewAttr("type", "image")).
+			FallbackAttribute(NewAttr("alt", "")).
+			FallbackAttribute(NewAttr("src", ""))
 
 	case "input:b", "input:btn", "input:button":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "button")).
-			FallbackAttribute(NewDefaultAttr("Value", ""))
+			FallbackAttribute(NewAttr("type", "button")).
+			FallbackAttribute(NewAttr("Value", ""))
 
 	case "input:reset":
 		token.
 			SetName("input").
-			FallbackAttribute(NewDefaultAttr("type", "reset"))
+			FallbackAttribute(NewAttr("type", "reset"))
 
 	case "select":
-		token.FallbackAttribute(NewDefaultAttr("name", ""))
+		token.FallbackAttribute(NewAttr("name", ""))
 
 	case "select:d", "select:disabled":
 		token.
 			SetName("select").
-			FallbackAttribute(NewDefaultAttr("name", "")).
-			FallbackAttribute(NewDefaultAttr("disabled", "").HasNoEqualSign())
+			FallbackAttribute(NewAttr("name", "")).
+			FallbackAttribute(NewAttr("disabled", "").HasNoEqualSign())
 
 	case "opt", "option":
 		token.
 			SetName("select").
-			FallbackAttribute(NewDefaultAttr("Value", ""))
+			FallbackAttribute(NewAttr("Value", ""))
 
 	case "textarea":
 		token.
-			FallbackAttribute(NewDefaultAttr("name", "")).
-			FallbackAttribute(NewDefaultAttr("cols", "30")).
-			FallbackAttribute(NewDefaultAttr("rows", "10"))
+			FallbackAttribute(NewAttr("name", "")).
+			FallbackAttribute(NewAttr("cols", "")).
+			FallbackAttribute(NewAttr("rows", ""))
 
 	case "marquee":
 		token.
-			FallbackAttribute(NewDefaultAttr("behavior", "")).
-			FallbackAttribute(NewDefaultAttr("direction", ""))
+			FallbackAttribute(NewAttr("behavior", "")).
+			FallbackAttribute(NewAttr("direction", ""))
 
 	case "menu:c":
 		token.
 			SetName("menu").
-			FallbackAttribute(NewDefaultAttr("type", "context"))
+			FallbackAttribute(NewAttr("type", "context"))
 
 	case "menu:t":
 		token.
 			SetName("menu").
-			FallbackAttribute(NewDefaultAttr("type", "toolbar"))
+			FallbackAttribute(NewAttr("type", "toolbar"))
 
 	case "video":
 		token.
-			FallbackAttribute(NewDefaultAttr("src", ""))
+			FallbackAttribute(NewAttr("src", ""))
 
 	case "audio":
 		token.
-			FallbackAttribute(NewDefaultAttr("src", ""))
+			FallbackAttribute(NewAttr("src", ""))
 
 	case "btn:s", "button:s", "button:submit":
 		token.
 			SetName("button").
-			FallbackAttribute(NewDefaultAttr("type", "submit"))
+			FallbackAttribute(NewAttr("type", "submit"))
 
 	case "btn:r", "button:l", "button:reset":
 		token.
 			SetName("button").
-			FallbackAttribute(NewDefaultAttr("type", "reset"))
+			FallbackAttribute(NewAttr("type", "reset"))
 
 	case "btn:b", "button:b", "button:button":
 		token.
 			SetName("button").
-			FallbackAttribute(NewDefaultAttr("type", "button"))
+			FallbackAttribute(NewAttr("type", "button"))
 
 	case "btn:d", "button:d", "button:disabled":
 		token.
 			SetName("button").
-			FallbackAttribute(NewDefaultAttr("disabled", "").HasNoEqualSign())
+			FallbackAttribute(NewAttr("disabled", "").HasNoEqualSign())
 
 	case "fst:d", "fset:d", "fieldset:d", "fieldset:disabled":
 		token.
 			SetName("fieldset").
-			FallbackAttribute(NewDefaultAttr("disabled", "").HasNoEqualSign())
+			FallbackAttribute(NewAttr("disabled", "").HasNoEqualSign())
 
 	case "data":
 		token.
-			FallbackAttribute(NewDefaultAttr("Value", ""))
+			FallbackAttribute(NewAttr("Value", ""))
 
 	case "meter":
 		token.
-			FallbackAttribute(NewDefaultAttr("Value", ""))
+			FallbackAttribute(NewAttr("Value", ""))
 
 	case "time":
 		token.
-			FallbackAttribute(NewDefaultAttr("datetime", ""))
+			FallbackAttribute(NewAttr("datetime", ""))
 	}
 }
